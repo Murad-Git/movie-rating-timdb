@@ -33,18 +33,6 @@ const MainProvider = ({ children }) => {
     setVideoState((prevState) => ({ ...prevState, shown: false }));
   };
   const setMediaContent = (media, title) => {
-    // setMediaState({ ...prevState, media, title });
-    // console.log(
-    //   `main.context: ${JSON.stringify(
-    //     media,
-    //     null,
-    //     4
-    //   )}-------------------------------`
-    // );
-    // setMediaState((prevState) => ({
-    //   ...prevState,
-    //   title,
-    // }));
     setMediaState((prevState) => ({
       ...prevState,
       media: {
@@ -53,7 +41,7 @@ const MainProvider = ({ children }) => {
       },
       title: title,
     }));
-
+  };
   const contextValue = {
     video: videoState,
     openVideo,

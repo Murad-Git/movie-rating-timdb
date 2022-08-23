@@ -1,18 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 import Header from '../../../components/UI/Header';
-import posterImg from '../../../assets/images/poster.jpg';
-import actorImg from '../../../assets/images/actor.jpg';
-import collectImg from '../../../assets/images/collections.jpg';
-import videoBgImg from '../../../assets/images/video_bg.jpg';
-import recommImg from '../../../assets/images/recom.jpg';
 import MediaScroller from '../../../components/movie/MediaScroller';
 import ActorScroller from '../../../components/movie/ActorScroller';
 // import { ColorExtractor } from 'react-color-extractor';
 import VideoContent from '../../../components/movie/VideoContent';
-import Socials from '../../../components/UI/Socials';
 import { secondsToHm } from '../../../utils/helpers';
 import ActionsList from '../../../components/movie/ActionsList';
 import MediaController from '../../../components/movie/MediaController';
@@ -38,13 +31,6 @@ const Movie = ({ movie }) => {
 
   const [shown, setShown] = useState(false);
   console.log(`from index.js${mediaContent.media.media}`);
-  // useEffect(() => {
-  //   setViewList({ ...viewList, image: actualView.most, title: 'video' });
-  // }, [actualView.most, viewList]);
-  // const pickColors = (colors) => {
-  //   setBgColor(`bg-[${colors[1]}]`);
-  //   // console.log(`bg-[${colors[1]}]`);
-  // };
 
   const showMoreHandler = () => {
     setShown((prevState) => !prevState);
@@ -114,44 +100,6 @@ const Movie = ({ movie }) => {
                     productions={movie.production_companies}
                     trailers={movie.videos}
                   />
-                  {/* <ul className='flex items-center child:mr-2 whitespace-nowrap font-semibold '>
-                    <li>
-                      <div className='percentage-score'>
-                        <ReactScoreIndicator value={(movie.vote_average*10).trunc()}/>
-                      </div>
-                      <div className='text'>
-                        User <br />
-                        Score
-                      </div>
-                    </li>
-                    <li className='w-1/5'>
-                      <a href=''>
-                        <Image
-                          src={productionImg}
-                          alt='production'
-                          // layout='responsive'
-                          objectFit='cover'
-                          // height={500}
-                          // width={500}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a className='underline' href=''>
-                        Kevin Feige Productions
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className='border-none bg-transparent will-change-auto transition-opacity ease-linear 1s hover:opacity-60 flex items-center text-gray-400 '
-                        href='#'
-                      >
-                        <FontAwesomeIcon icon={faPlay} className='mr-1' />
-                        {/* <PlayIcon className='w-6 mr-1 text-gray-400' />
-                        Play Trailer
-                      </a>
-                    </li>
-                  </ul> */}
                 </div>
                 <div className='header_info'>
                   {movie.tagline && (
@@ -191,76 +139,6 @@ const Movie = ({ movie }) => {
                       videos={movie.videos}
                       images={movie.images}
                     />
-                    {/* <ul className='flex w-full media-list'>
-                      <li
-                        className={viewList.title === 'most' ? 'selected' : ''}
-                      >
-                        <a
-                          className='cursor-pointer'
-                          onClick={() =>
-                            setViewList({
-                              ...viewList,
-                              image: actualView.most,
-                              title: 'most',
-                            })
-                          }
-                        >
-                          Most Popular
-                        </a>
-                      </li>
-                      <li
-                        className={viewList.title === 'video' ? 'selected' : ''}
-                      >
-                        <a
-                          className='cursor-pointer'
-                          onClick={() =>
-                            setViewList({
-                              ...viewList,
-                              image: actualView.video,
-                              title: 'video',
-                            })
-                          }
-                        >
-                          Videos <span>26</span>
-                        </a>
-                      </li>
-                      <li
-                        className={
-                          viewList.title === 'backdrops' ? 'selected' : ''
-                        }
-                      >
-                        <a
-                          className='cursor-pointer'
-                          onClick={() =>
-                            setViewList({
-                              ...viewList,
-                              image: actualView.backdrops,
-                              title: 'backdrops',
-                            })
-                          }
-                        >
-                          Backdrops <span>26</span>
-                        </a>
-                      </li>
-                      <li
-                        className={
-                          viewList.title === 'posters' ? 'selected' : ''
-                        }
-                      >
-                        <a
-                          className='cursor-pointer'
-                          onClick={() =>
-                            setViewList({
-                              ...viewList,
-                              image: actualView.posters,
-                              title: 'posters',
-                            })
-                          }
-                        >
-                          Posters <span>26</span>
-                        </a>
-                      </li>
-                    </ul> */}
                   </div>
                   <MediaScroller mediaType={title} height={400} width={500} />
                 </section>
@@ -304,86 +182,12 @@ const Movie = ({ movie }) => {
                     revenue={revenue}
                     keywords={movie.keywords.keywords}
                   />
-                  {/* <div className='flex justify-between lg:flex-col'>
-                    <div className='facts lg:mb-8'>
-                      <div className='revenue'>
-                        <ul className='strong-block child:mb-2'>
-                          {[1, 2, 3, 4].map((el) => (
-                            <li key={el}>
-                              <p>
-                                <strong>
-                                  <bdi>Status</bdi>
-                                </strong>
-                                Released
-                              </p>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                    <div className='keywords w-1/3  lg:w-full'>
-                      <div className='social_links lg:mb-6'>
-                        <ul className='socials flex flex-wrap child:mr-2  child:text-3xl lg:child:mr-3 child:text-slate-600 hover:child:text-slate-800'>
-                          <Socials />
-                                                    
-                          <li className='social'>
-                            <a href='https://www.facebook.com/facebook_id'>
-                              <FontAwesomeIcon icon={faFacebook} />
-                            </a>
-                          </li>
-                          <li className='social'>
-                            <a href='https://twitter.com/twitter_id'>
-                              <FontAwesomeIcon icon={faTwitter} />
-                            </a>
-                          </li>
-                          <li className='social'>
-                            <a href='https://instagram.com/instagram_id'>
-                              <FontAwesomeIcon icon={faInstagram} />
-                            </a>
-                          </li>
-                          <li className='social'>
-                            <a href='https://www.imdb.com/title/tt10648342/imdb_id'>
-                              <FontAwesomeIcon icon={faImdb} />
-                            </a>
-                          </li>
-                          <li className='social'>
-                            <a href='homepage'>
-                              <FontAwesomeIcon icon={faHouse} />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <h4 className='font-bold text-lg mb-2'>Keywords</h4>
-                      <ul className='keyword-btn flex flex-wrap justify-start'>
-                        {[1, 2, 3, 4, 5, 6].map((el) => (
-                          <li key={el}>
-                            <a
-                              className='bg-gray-200 hover:bg-gray-100 text-black py-0.5 px-2 font-normal border-none hover:border-transparent rounded'
-                              // className='bg-transparent hover:bg-sky-500 text-sky-500 font-semibold hover:text-white py-0.5 px-1 border border-sky-500 hover:border-transparent rounded'
-                              href='#'
-                            >
-                              hero
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div> */}
                 </section>
               </div>
             </div>
           </div>
-          <VideoContent
-          // url={videoData.url}
-          // title={videoData.title}
-          // onDisplay={videoData.onDisplay}
-          // setVideoData={setVideoData}
-          // onShowVideo={onDisplayHandler}
-          />
+          <VideoContent />
         </main>
-        {/* <ColorExtractor getColors={pickColors}>
-          <img src={posterImg} className='hidden' />
-        </ColorExtractor> */}
       </div>
     </>
   );

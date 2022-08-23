@@ -7,24 +7,6 @@ const MediaScroller = ({ mediaType, height, width }) => {
   const { mediaContent } = useContext(MainContext);
   const { title } = mediaContent;
   const scrollerRef = useRef(null);
-  // const moveRight = () => {
-  //   scrollerRef.current.scrollLeft += 200;
-  // };
-  // const moveLeft = () => {
-  //   scrollerRef.current.scrollLeft -= 200;
-  // };
-  // console.log(mediaType);
-
-  // console.log(
-  //   `Media scroller: ${JSON.stringify(
-  //     mediaContent,
-  //     null,
-  //     4
-  //   )}-------------------------------`
-  // );
-  // console.log(
-  //   `test media content: ${mediaContent.media['most']}-------------------------------`
-  // );
 
   return (
     <div className='recs_scroller mb-5 relative'>
@@ -32,16 +14,16 @@ const MediaScroller = ({ mediaType, height, width }) => {
         ref={scrollerRef}
         className='scroller whitespace-nowrap overflow-y-hidden scroll-smooth'
       >
-        {/* {mediaType && (
+        {mediaType && (
           <MediaWrapper
             mediaType={mediaType}
             media={mediaContent.media.most}
             height={height}
             width={width}
           />
-        )} */}
+        )}
 
-        {mediaType === 'recs' &&
+        {/* {mediaType === 'recs' &&
           mediaContent.media.recs.map((rec, i) => (
             <MediaWrapper
               key={i}
@@ -50,7 +32,7 @@ const MediaScroller = ({ mediaType, height, width }) => {
               height={height}
               width={width}
             />
-          ))}
+          ))} */}
         {/* {media &&
           mediaContent[`${mediaContent.title}`].map((media, i) => (
             <MediaWrapper key={i} media={media} height={height} width={width} />

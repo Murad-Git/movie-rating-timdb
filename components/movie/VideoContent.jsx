@@ -34,18 +34,6 @@ const VideoContent = () => {
         ></iframe>
       </div>
     </div>
-    // <div
-    //   className={`video-player flex fixed flex-col h-full w-full z-50 top-full left-full transform -translate-x-1/2 -translate-y-1/2`}
-    // >
-    //   <iframe
-    //     className='top-0 left-0 w-full h-full sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-4/5'
-    //     src={`https://www.youtube.com/embed/${url}`}
-    //     frameBorder='0'
-    //     allow='accelerometer; autoplayclipboard-write; encrypted-media; gyroscope; picture-in-picture'
-    //     allowFullScreen
-    //     title={`${title}`}
-    //   ></iframe>
-    // </div>
   );
 };
 

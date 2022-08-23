@@ -32,10 +32,7 @@ const Home = ({ results }) => {
       },
     }));
   }, []);
-  // console.log(media.media.video[Object.keys(media.media.videov)[0]]);
-  console.log(media.media.video[0]);
-  // console.log(media.video);
-  // console.log(`${results.results[0].title}`);
+
   return (
     <div>
       <Head>
