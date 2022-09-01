@@ -1,11 +1,11 @@
 import React, { RefObject, useRef } from 'react';
 import MediaWrapper from '../UI/MediaWrapper';
-import ScrollArrow from '../UI/ScrollArrow';
 import {
   Video,
   Backdrops,
   Posters,
   Recommendation,
+  Cast,
 } from '../../../types/movieTypings';
 import { filterSeven } from '../../utils/helpers';
 import { useSelector } from 'react-redux';
@@ -23,24 +23,25 @@ interface MediaSection {
 }
 
 interface MediaType {
-  media: MediaSection | Recommendation[];
+  media?: MediaSection;
+  cast?: Cast[];
+  recommendations?: Recommendation[];
   height: number;
   width: number;
 }
 
-const MediaScroller = ({ media, height, width }: MediaType) => {
+const MediaScroller = ({
+  media,
+  cast,
+  recommendations,
+  height,
+  width,
+}: MediaType) => {
   const currentMedia = useSelector(mediaValue);
   const scrollerRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
-  const scrollLeft = () => {
-    scrollerRef.current!.scrollLeft -= 200;
-  };
-  const scrollRight = () => {
-    scrollerRef.current!.scrollLeft += 200;
-  };
-
-  const getMedia: any = (media: MediaSection | Recommendation[]) => {
-    if ('videos' in media) {
+  const getMedia: any = (media: MediaSection) => {
+    if (media) {
       const { videos, images } = media;
       const video = filterSeven(videos.results).filter(
         (video: Video) => video.site === 'YouTube'
@@ -56,49 +57,72 @@ const MediaScroller = ({ media, height, width }: MediaType) => {
       };
       return allMedia;
     }
-    return media;
+    return;
   };
   const mediaData = getMedia(media);
 
+  // console.log(
+  //   `sliderleft, and sliderwith: ${JSON.stringify(
+  //     { sliderLeft, sliderWith },
+  //     null,
+  //     4
+  //   )}-------------------------------`
+  // );
   return (
     <div className='recs_scroller mb-5 relative'>
       <div
         ref={scrollerRef}
         className='scroller whitespace-nowrap overflow-y-hidden scroll-smooth'
       >
-        {'videos' in media
-          ? mediaData[currentMedia as keyof typeof mediaData].map(
-              (media: Video | Backdrops | Posters, index: number) => (
-                <MediaWrapper
-                  media={media}
-                  height={height}
-                  width={width}
-                  key={index}
-                />
-              )
-            )
-          : mediaData.map((media: Recommendation, index: number) => (
+        {media &&
+          mediaData[currentMedia as keyof typeof mediaData].map(
+            (media: Video | Backdrops | Posters, index: number) => (
               <MediaWrapper
                 media={media}
                 height={height}
                 width={width}
                 key={index}
               />
+            )
+          )}
+        {cast &&
+          cast
+            ?.filter((actor, index) => index < 12)
+            .map((media: Cast, index: number) => (
+              <MediaWrapper
+                cast={media}
+                height={height}
+                width={width}
+                key={index}
+              />
             ))}
+        {recommendations &&
+          recommendations.map((media: Recommendation, index: number) => (
+            <MediaWrapper
+              recommendation={media}
+              height={height}
+              width={width}
+              key={index}
+            />
+          ))}
         {/* <div className='absolute top-0 right-0 bg-gradient-to-l from-[#ffff] h-full w-1/12 ' /> */}
       </div>
-      <ScrollArrow scrollerRef={scrollerRef} />
+      <div
+        className='hidden md:inline-block arrows-left left-7 cursor-pointer border-solid border-2 border-[rgba(255,255,255,0.7)] w-[4rem] py-6 pr-2 bg-[rgba(18,18,18,.5)] rounded group absolute top-[30%]'
+        onClick={() => (scrollerRef.current!.scrollLeft -= 200)}
+      >
+        <ChevronLeftIcon className='h-10 absolute left-2 animate-[leftArrow_1.5s_ease-in-out_infinite] group-hover:text-[#ff893b] text-white' />
+        <ChevronLeftIcon className='h-10 animate-[leftArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-[#ff893b] text-white' />
+      </div>
+      <div
+        className='hidden md:inline-block arrows-right left-[92%] cursor-pointer border-solid border-2 border-[rgba(255,255,255,0.7)] w-[4rem] py-6 px-3 bg-[rgba(18,18,18,.5)] rounded group absolute top-[30%]'
+        onClick={() => (scrollerRef.current!.scrollLeft += 200)}
+      >
+        <ChevronRightIcon className='h-10 absolute left-5 animate-[rightArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-[#ff893b] text-white' />
+        <ChevronRightIcon className='h-10 animate-[rightArrow_1.5s_ease-in-out_infinite] group-hover:text-[#ff893b] text-white' />
+      </div>
     </div>
   );
 };
 
 export default MediaScroller;
-
-// : mediaContent[`${mediaContent.title}`].map((media, i) => (
-//     <MediaWrapper
-//       key={i}
-//       media={media}
-//       height={height}
-//       width={width}
-//     />
-//   ))}

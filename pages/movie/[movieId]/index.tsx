@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { GetServerSideProps, NextPage } from 'next';
 import Header from '../../../src/components/UI/Header';
 import MediaScroller from '../../../src/components/movie/MediaScroller';
-import ActorScroller from '../../../src/components/movie/ActorScroller';
 // import { ColorExtractor } from 'react-color-extractor';
 import VideoContent from '../../../src/components/movie/VideoContent';
 import { secondsToHm } from '../../../src/utils/helpers';
@@ -127,12 +126,11 @@ const Movie: NextPage<Props> = ({ movie }) => {
                 {/* cast */}
                 <section className='cast'>
                   <div className='mb-5'>
-                    <ActorScroller
-                      castList={movie.credits.cast}
-                      height={400}
-                      width={300}
-                      // height={195}
-                      // width={138}
+                    <MediaScroller
+                      cast={movie.credits.cast}
+                      // media={movie.credits.cast}
+                      height={500}
+                      width={350}
                     />
                   </div>
                 </section>
@@ -180,7 +178,8 @@ const Movie: NextPage<Props> = ({ movie }) => {
                   </div>
                   {movie.recommendations.results.length > 0 ? (
                     <MediaScroller
-                      media={movie.recommendations.results}
+                      recommendations={movie.recommendations.results}
+                      // media={movie.recommendations.results}
                       height={370}
                       width={494}
                     />

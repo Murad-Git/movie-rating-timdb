@@ -1,8 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import Image from 'next/image';
-import React, { RefObject, useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { Cast } from '../../../types/movieTypings';
-import ScrollArrow from '../UI/ScrollArrow';
 
 interface MediaType {
   castList: Cast[];
@@ -11,9 +10,16 @@ interface MediaType {
 }
 
 const ActorScroller = ({ castList, height, width }: MediaType) => {
+  const [sliderLeft, setSiderLeft] = useState<number>(0);
+
   const scrollerRef: RefObject<HTMLUListElement> =
     useRef<HTMLUListElement>(null);
-  console.log(scrollerRef.current?.scrollWidth);
+  const sliderWith = scrollerRef.current ? scrollerRef.current.offsetWidth : 0;
+  scrollerRef.current ? scrollerRef.current.offsetWidth : 0;
+  console.log(
+    `scrollref from scrollArrow: ${sliderLeft}; sliderWith: ${sliderWith}====`
+  );
+
   return (
     <div className='relative'>
       <ul
@@ -52,19 +58,39 @@ const ActorScroller = ({ castList, height, width }: MediaType) => {
                 <p className='font-normal text-gray-700 dark:text-gray-400 break-words text-lg'>
                   {cast.character}
                 </p>
-                {/* <a>
+                <a>
                   <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
                     {cast.name}
                   </h5>
                 </a>
                 <p className='font-normal text-gray-700 dark:text-gray-400'>
                   {cast.character}
-                </p> */}
+                </p>
               </div>
             </li>
           ))}
         {/* <div className='absolute top-0 right-0 bg-gradient-to-l from-[#ffff] h-full w-12 ' /> */}
-        <ScrollArrow scrollerRef={scrollerRef} />
+        {/* <ScrollArrow scrollerRef={scrollerRef} /> */}
+        <div className='scroll-arrows'>
+          <div
+            className='hidden md:inline-block arrows-left left-7 cursor-pointer border-solid border-2 border-[rgba(255,255,255,0.7)] w-[4rem] py-6 pr-2 bg-[rgba(18,18,18,.5)] rounded group absolute top-[30%]'
+            onClick={() =>
+              setSiderLeft((scrollerRef.current!.scrollLeft -= 200))
+            }
+          >
+            <ChevronLeftIcon className='h-10 absolute left-2 animate-[leftArrow_1.5s_ease-in-out_infinite] group-hover:text-[#ff893b] text-white' />
+            <ChevronLeftIcon className='h-10 animate-[leftArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-[#ff893b] text-white' />
+          </div>
+          <div
+            className='hidden md:inline-block arrows-right left-[92%] cursor-pointer border-solid border-2 border-[rgba(255,255,255,0.7)] w-[4rem] py-6 px-3 bg-[rgba(18,18,18,.5)] rounded group absolute top-[30%]'
+            onClick={() =>
+              setSiderLeft((scrollerRef.current!.scrollLeft += 200))
+            }
+          >
+            <ChevronRightIcon className='h-10 absolute left-5 animate-[rightArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-[#ff893b] text-white' />
+            <ChevronRightIcon className='h-10 animate-[rightArrow_1.5s_ease-in-out_infinite] group-hover:text-[#ff893b] text-white' />
+          </div>
+        </div>
       </ul>
     </div>
   );

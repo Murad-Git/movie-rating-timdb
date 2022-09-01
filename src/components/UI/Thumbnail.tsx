@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import { IMG_URL } from '../../utils/requests';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { TrendingResult } from '../../../types/mainTypings';
 import { ThumbUpIcon } from '@heroicons/react/outline';
 import Link from 'next/dist/client/link';
@@ -13,10 +11,6 @@ interface Props {
 
 // eslint-disable-next-line react/display-name
 const Thumbnail = ({ result }: Props) => {
-  // const title = (result.title || result.original_name)
-  //   ?.replaceAll(/[^\w\s]/gi, '')
-  //   .toLowerCase()
-  //   .replaceAll(' ', '-');
   return (
     <Link
       href={`/movie/${urlTitle(
@@ -54,7 +48,3 @@ const Thumbnail = ({ result }: Props) => {
 };
 
 export default Thumbnail;
-
-{
-  /* <ThumbUpIcon className='h-5 mx-2' />; */
-}

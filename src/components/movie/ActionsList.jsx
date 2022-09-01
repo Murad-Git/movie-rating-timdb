@@ -9,7 +9,6 @@ import { IMG_URL } from '../../utils/requests';
 function ActionsList({ voteAgerage, productions, trailers }) {
   const dispatch = useDispatch();
   const trailer = trailers.results.find((trailer, index) => trailer.official);
-  // console.log(trailers);
 
   return (
     <ul className='flex items-center child:mr-3 whitespace-nowrap font-semibold'>
@@ -27,15 +26,15 @@ function ActionsList({ voteAgerage, productions, trailers }) {
           .filter((item, index) => index < 3)
           .map((prod, index) =>
             prod.logo_path ? (
-              <li className='w-16' key={index}>
+              <li className='w-14' key={index}>
                 <a href=''>
                   <Image
                     layout='responsive'
                     src={`${IMG_URL}${prod.logo_path}`}
                     alt='production'
                     objectFit='cover'
-                    height={400}
-                    width={1000}
+                    height={500}
+                    width={400}
                   />
                 </a>
               </li>
