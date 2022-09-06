@@ -68,7 +68,13 @@ export interface Movie {
     twitter_id: string;
   };
   keywords: {
-    keywords: [
+    keywords?: [
+      {
+        id: number;
+        name: string;
+      }
+    ];
+    results?: [
       {
         id: number;
         name: string;
@@ -130,6 +136,7 @@ export interface Recommendation {
   id: number;
   title: string;
   original_language: string;
+  original_name?: string;
   original_title: string;
   overview: string;
   poster_path: string;
@@ -137,6 +144,7 @@ export interface Recommendation {
   genre_ids: [string];
   popularity: number;
   release_date: string;
+  first_air_date?: string;
   video: boolean;
   vote_average: number;
   vote_count: number;

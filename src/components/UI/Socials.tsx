@@ -6,7 +6,17 @@ import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faImdb } from '@fortawesome/free-brands-svg-icons';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 
-const Socials = ({ links, homepage }) => {
+interface Props {
+  links?: {
+    facebook_id?: string;
+    twitter_id?: string;
+    instagram_id?: string;
+    imdb_id?: string;
+  };
+  homepage?: string;
+}
+
+const Socials = ({ links, homepage }: Props) => {
   return (
     <ul className='socials flex flex-wrap child:mr-2  child:text-3xl lg:child:mr-3 child:text-slate-400 hover:child:text-mainText-color'>
       <li className='social'>

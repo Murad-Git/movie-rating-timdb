@@ -1,10 +1,12 @@
-export interface TrendingTypes {
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+
+export interface MainTypes {
   page: number;
-  results: [TrendingResult];
+  results: [MainType];
   total_pages: number;
   total_results: number;
 }
-export interface TrendingResult {
+export interface MainType {
   adult: boolean;
   backdrop_path: string;
   id: number;
@@ -14,7 +16,7 @@ export interface TrendingResult {
   original_title: string;
   overview: string;
   poster_path: string;
-  media_type: string;
+  media_type?: string;
   genre_ids: [number];
   popularity: number;
   release_date?: string;
@@ -23,3 +25,8 @@ export interface TrendingResult {
   vote_average: number;
   vote_count: number;
 }
+export type ServerProps<
+  P extends { [key: string]: any } = { [key: string]: any }
+> = (
+  context: GetServerSidePropsContext
+) => Promise<GetServerSidePropsResult<P>>;

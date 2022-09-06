@@ -1,24 +1,43 @@
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { openVideo } from '../../store/slices/mediaSlice';
+import { openVideo } from '../../store/slices/mainSlice';
 import { IMG_URL } from '../../utils/requests';
+import { Video } from '../../../types/movieTypings';
 
-function ActionsList({ voteAgerage, productions, trailers }) {
+interface Props {
+  voteAgerage?: number;
+  productions: [
+    {
+      id?: number;
+      logo_path?: null | string;
+      name?: string;
+      origin_country?: string;
+    }
+  ];
+  trailers: {
+    results: [Video];
+  };
+}
+function ActionsList({ voteAgerage, productions, trailers }: Props) {
   const dispatch = useDispatch();
   const trailer = trailers.results.find((trailer, index) => trailer.official);
 
   return (
-    <ul className='flex items-center child:mr-3 whitespace-nowrap font-semibold'>
+    <ul className='flex items-center child:mr-3 whitespace-nowrap font-semibold text-lg'>
       {voteAgerage && (
-        <li>
-          <div className='percentage-score'></div>
-          <div className='text'>
-            User <br />
-            Score
+        <li className='flex items-center'>
+          <div className='score inline-block mr-2'>
+            <FontAwesomeIcon
+              color='#f5c518'
+              className='h-7'
+              size='lg'
+              icon={faStar}
+            />
           </div>
+          <div className='text inline-block'>{voteAgerage}</div>
         </li>
       )}
       {productions &&
@@ -26,15 +45,15 @@ function ActionsList({ voteAgerage, productions, trailers }) {
           .filter((item, index) => index < 3)
           .map((prod, index) =>
             prod.logo_path ? (
-              <li className='w-14' key={index}>
+              <li className='w-16' key={index}>
                 <a href=''>
                   <Image
                     layout='responsive'
                     src={`${IMG_URL}${prod.logo_path}`}
                     alt='production'
                     objectFit='cover'
-                    height={500}
-                    width={400}
+                    height={300}
+                    width={900}
                   />
                 </a>
               </li>
@@ -51,10 +70,15 @@ function ActionsList({ voteAgerage, productions, trailers }) {
           <a
             className='border-none bg-transparent will-change-auto transition-opacity ease-linear 1s hover:opacity-60 flex items-center text-gray-400 cursor-pointer'
             onClick={() =>
-              dispatch(openVideo({ url: trailer.key, title: trailer.name }))
+              dispatch(
+                openVideo({
+                  url: trailer?.key || 'no url key found',
+                  title: trailer?.name || 'no trailer title found',
+                })
+              )
             }
           >
-            <FontAwesomeIcon icon={faPlay} className='mr-1' />
+            <FontAwesomeIcon icon={faPlay} className='mr-1 h-5' />
             Play Trailer
           </a>
         </li>

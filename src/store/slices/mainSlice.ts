@@ -3,6 +3,8 @@ import { RootState } from '../store';
 
 export interface MediaState {
   mediaType: string;
+  trendType: string;
+  discoverType: string;
   url: string;
   videoTitle: string;
   shown: boolean;
@@ -10,6 +12,8 @@ export interface MediaState {
 
 const initialState: MediaState = {
   mediaType: 'most',
+  trendType: 'movie',
+  discoverType: 'day',
   url: '',
   videoTitle: '',
   shown: false,
@@ -22,6 +26,13 @@ export const mediaSlice = createSlice({
     changeMedia: (state, action: PayloadAction<string>) => {
       state.mediaType = action.payload;
     },
+    changeTrend: (state, action: PayloadAction<string>) => {
+      state.trendType = action.payload;
+    },
+    changeDiscover: (state, action: PayloadAction<string>) => {
+      state.discoverType = action.payload;
+    },
+
     openVideo: (
       state,
       { payload }: PayloadAction<{ url: string; title: string }>
@@ -39,6 +50,12 @@ export const mediaSlice = createSlice({
   },
 });
 
-export const { changeMedia, openVideo, closeVideo } = mediaSlice.actions;
+export const {
+  changeMedia,
+  changeTrend,
+  changeDiscover,
+  openVideo,
+  closeVideo,
+} = mediaSlice.actions;
 export const mediaValue = (state: RootState) => state.media.mediaType;
 export default mediaSlice.reducer;

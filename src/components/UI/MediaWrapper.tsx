@@ -8,41 +8,45 @@ import {
   Recommendation,
   Cast,
 } from '../../../types/movieTypings';
+import { MainType } from '../../../types/mainTypings';
 import { useDispatch } from 'react-redux';
-import { openVideo } from '../../store/slices/mediaSlice';
+import { openVideo } from '../../store/slices/mainSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlay } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlay, faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { urlTitle } from '../../utils/helpers';
+
 interface MediaType {
   media?: Video | Backdrops | Posters;
   cast?: Cast;
-  recommendation?: Recommendation;
+  mainMedia?: MainType | Recommendation;
   height: number;
   width: number;
 }
 
-const MediaWrapper = ({
-  media,
-  cast,
-  recommendation,
-  height,
-  width,
-}: MediaType) => {
+const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
   const dispatch = useDispatch();
   return (
-    <div className='inline-block mr-4 group text-black'>
-      <div className={`image_content ${cast ? 'w-[15rem]' : 'w-[30rem]'} `}>
+    <div className={`inline-block mr-4 mb-2 group text-black`}>
+      <div
+        className={`image_content ${
+          cast ? 'w-[15rem]' : mainMedia ? 'w-[15rem]' : 'w-[30rem]'
+        } `}
+      >
         {/* cast */}
         {cast && (
           <div className='bg-mainText-color rounded-lg border  shadow-lg border-mainText-color'>
             <Link href='#'>
-              <>
+              <div>
                 <Image
                   layout='responsive'
                   objectFit='cover'
                   className='rounded-t-lg object-cover'
-                  src={`https://image.tmdb.org/t/p/original/${cast.profile_path}`}
+                  src={
+                    cast.profile_path
+                      ? `https://image.tmdb.org/t/p/original/${cast.profile_path}`
+                      : '/no-person.png'
+                  }
                   height={height}
                   width={width}
                   alt='actor'
@@ -61,7 +65,7 @@ const MediaWrapper = ({
                     {cast.character}
                   </p>
                 </div>
-              </>
+              </div>
             </Link>
           </div>
         )}
@@ -75,7 +79,11 @@ const MediaWrapper = ({
             title={media.name}
           >
             <Image
-              src={`${YT_URL}${media.key}/hqdefault.jpg`}
+              src={
+                media.key
+                  ? `${YT_URL}${media.key}/hqdefault.jpg`
+                  : '/no-media.png'
+              }
               height={height}
               width={width}
               alt={media.name}
@@ -83,8 +91,7 @@ const MediaWrapper = ({
               layout='responsive'
             />
             <FontAwesomeIcon
-              className='text-white opacity-50 absolute top-[40%] left-[40%] hover:opacity-80'
-              size='5x'
+              className='text-white opacity-50 absolute top-[40%] left-[40%] hover:opacity-80 h-20'
               icon={faCirclePlay}
             />
           </a>
@@ -93,7 +100,11 @@ const MediaWrapper = ({
         {media && 'file_path' in media && (
           <a>
             <Image
-              src={`${IMG_URL}${media.file_path}`}
+              src={
+                media.file_path
+                  ? `${IMG_URL}${media.file_path}`
+                  : '/no-media.png'
+              }
               height={height}
               width={width}
               alt='media'
@@ -102,32 +113,55 @@ const MediaWrapper = ({
             />
           </a>
         )}
-        {/* recommendations */}
-        {recommendation && (
+        {/* media list */}
+        {mainMedia && (
           <Link
-            className='cursor-pointer'
             href={`/movie/${urlTitle(
-              recommendation.id,
-              recommendation.title || recommendation.original_title
+              mainMedia.id,
+              mainMedia.title || mainMedia.original_title
             )}`}
           >
-            <div>
+            <div className='bg-mainText-color rounded-lg  shadow-lg cursor-pointer'>
               <Image
-                src={`${IMG_URL}${recommendation.backdrop_path}`}
+                layout='responsive'
+                objectFit='cover'
+                className='rounded-t-lg object-cover'
+                src={
+                  mainMedia.poster_path
+                    ? `${IMG_URL}${mainMedia.poster_path}`
+                    : '/no-media.png'
+                }
                 height={height}
                 width={width}
-                alt='media'
-                className='object-cover rounded'
-                layout='responsive'
+                alt='actor'
               />
-              <div className='invisible flex group-hover:visible meta bg-slate-50 relative -top-10 left-0 h-10 w-full z-10 box-border px-2.5 justify-between align-middle opacity-75'>
-                <span className='text-md inline-flex align-middle'>
-                  {recommendation.release_date.split('-').reverse().join('/')}
-                </span>
-                <span className='text-md inline-flex align-middle'>
-                  {recommendation.title || recommendation.original_title}
-                </span>
-                <span className='box-border'></span>
+              <div className='p-3'>
+                <div className='whitespace-pre-wrap break-words text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1 md:mb-3 min-h-[5rem]'>
+                  <a
+                    className='hover:text-gray-400 cursor-pointer'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {mainMedia.original_name || mainMedia.title}
+                  </a>
+                </div>
+                <p className='font-normal text-gray-700 dark:text-gray-400 break-words text-md md:text-lg mb-1 md:mb-3'>
+                  {(mainMedia.release_date || mainMedia.first_air_date)
+                    ?.split('-')
+                    .reverse()
+                    .join('/')}
+                </p>
+                <div className='flex items-center'>
+                  <div className='score inline-block mr-2'>
+                    <FontAwesomeIcon
+                      className='h-5 md:h-7 text-accent-color'
+                      icon={faStar}
+                    />
+                  </div>
+                  <div className='text inline-block text-lg '>
+                    {Math.round(mainMedia.vote_average * 100) / 100}
+                  </div>
+                </div>
               </div>
             </div>
           </Link>

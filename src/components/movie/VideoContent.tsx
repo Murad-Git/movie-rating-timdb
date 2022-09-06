@@ -4,7 +4,7 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import 'font-awesome/css/font-awesome.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { closeVideo } from '../../store/slices/mediaSlice';
+import { closeVideo } from '../../store/slices/mainSlice';
 
 const VideoContent = () => {
   const {
@@ -23,7 +23,7 @@ const VideoContent = () => {
       <div className='bg-black left-[5%] w-11/12 relative flex justify-between px-4 py-1'>
         <h2 className='font-semibold text-lg'>{title}</h2>
         <button onClick={() => dispatch(closeVideo())}>
-          <FontAwesomeIcon icon={faCircleXmark} size='lg' />
+          <FontAwesomeIcon icon={faCircleXmark} className='h-5' />
         </button>
       </div>
       <div className='video-player overflow-hidden pb-[56.25%] relative h-0'>

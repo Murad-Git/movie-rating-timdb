@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import mediaSlice from './slices/mediaSlice';
+import mainSlice from './slices/mainSlice';
 
 export const store = configureStore({
   reducer: {
-    media: mediaSlice,
+    media: mainSlice,
   },
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Backdrops, Posters, Video } from '../../../types/movieTypings';
-import { changeMedia, mediaValue } from '../../store/slices/mediaSlice';
+import { changeMedia, mediaValue } from '../../store/slices/mainSlice';
 
 interface MediaSection {
   media: {
@@ -19,7 +19,7 @@ const MediaController = ({ media }: MediaSection) => {
   const dispatch = useDispatch();
 
   return (
-    <ul className='flex w-full media-list'>
+    <ul className='flex w-full media-list '>
       <li className={currentMedia === 'most' ? 'selected' : ''}>
         <a
           className='cursor-pointer'

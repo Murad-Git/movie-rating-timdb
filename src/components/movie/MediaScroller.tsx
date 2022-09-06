@@ -7,9 +7,10 @@ import {
   Recommendation,
   Cast,
 } from '../../../types/movieTypings';
+import { MainType } from '../../../types/mainTypings';
 import { filterSeven } from '../../utils/helpers';
 import { useSelector } from 'react-redux';
-import { mediaValue } from '../../store/slices/mediaSlice';
+import { mediaValue } from '../../store/slices/mainSlice';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 interface MediaSection {
@@ -26,6 +27,7 @@ interface MediaType {
   media?: MediaSection;
   cast?: Cast[];
   recommendations?: Recommendation[];
+  mainMedia?: MainType[];
   height: number;
   width: number;
 }
@@ -34,6 +36,7 @@ const MediaScroller = ({
   media,
   cast,
   recommendations,
+  mainMedia,
   height,
   width,
 }: MediaType) => {
@@ -44,7 +47,7 @@ const MediaScroller = ({
     if (media) {
       const { videos, images } = media;
       const video = filterSeven(videos.results).filter(
-        (video: Video) => video.site === 'YouTube'
+        (video: any) => video.site === 'YouTube'
       );
       const backdrops = filterSeven(images.backdrops);
       const posters = filterSeven(images.posters);
@@ -72,7 +75,7 @@ const MediaScroller = ({
     <div className='recs_scroller mb-5 relative'>
       <div
         ref={scrollerRef}
-        className='scroller whitespace-nowrap overflow-y-hidden scroll-smooth'
+        className='scroller whitespace-nowrap overflow-y-hidden scroll-smooth grid grid-flow-col gap-2'
       >
         {media &&
           mediaData[currentMedia as keyof typeof mediaData].map(
@@ -105,21 +108,30 @@ const MediaScroller = ({
               key={index}
             />
           ))}
+        {mainMedia &&
+          mainMedia.map((media, index) => (
+            <MediaWrapper
+              key={index}
+              mainMedia={media}
+              height={height}
+              width={width}
+            />
+          ))}
         {/* <div className='absolute top-0 right-0 bg-gradient-to-l from-[#ffff] h-full w-1/12 ' /> */}
       </div>
       <div
         className='hidden md:inline-block arrows-left left-7 cursor-pointer border-solid border-2 border-[rgba(255,255,255,0.7)] w-[4rem] py-6 pr-2 bg-[rgba(18,18,18,.5)] rounded group absolute top-[30%]'
         onClick={() => (scrollerRef.current!.scrollLeft -= 200)}
       >
-        <ChevronLeftIcon className='h-10 absolute left-2 animate-[leftArrow_1.5s_ease-in-out_infinite] group-hover:text-[#ff893b] text-white' />
-        <ChevronLeftIcon className='h-10 animate-[leftArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-[#ff893b] text-white' />
+        <ChevronLeftIcon className='h-10 absolute left-2 animate-[leftArrow_1.5s_ease-in-out_infinite] group-hover:text-accent-color text-white' />
+        <ChevronLeftIcon className='h-10 animate-[leftArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-accent-color text-white' />
       </div>
       <div
         className='hidden md:inline-block arrows-right left-[92%] cursor-pointer border-solid border-2 border-[rgba(255,255,255,0.7)] w-[4rem] py-6 px-3 bg-[rgba(18,18,18,.5)] rounded group absolute top-[30%]'
         onClick={() => (scrollerRef.current!.scrollLeft += 200)}
       >
-        <ChevronRightIcon className='h-10 absolute left-5 animate-[rightArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-[#ff893b] text-white' />
-        <ChevronRightIcon className='h-10 animate-[rightArrow_1.5s_ease-in-out_infinite] group-hover:text-[#ff893b] text-white' />
+        <ChevronRightIcon className='h-10 absolute left-5 animate-[rightArrow_1.5s_ease-in-out_infinite_0.1s] group-hover:text-accent-color text-white' />
+        <ChevronRightIcon className='h-10 animate-[rightArrow_1.5s_ease-in-out_infinite] group-hover:text-accent-color text-white' />
       </div>
     </div>
   );

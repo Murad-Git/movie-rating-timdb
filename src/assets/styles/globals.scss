@@ -7,30 +7,61 @@
     @apply bg-[#06202A] text-gray-300;
   }
 }
-.media-list {
-  li {
-    @apply inline-block m-0 mr-6 text-lg font-semibold;
+
+@layer components {
+  .media-list {
+    li {
+      @apply inline-block m-0 mr-6 text-lg font-semibold;
+    }
+  }
+  .boldText {
+    @apply font-semibold text-2xl;
+  }
+
+  .selected {
+    @apply border-b-4 border-mainText-color focus:border-b-4 transition ease-in-out;
+  }
+
+  .strong-block {
+    strong {
+      @apply block;
+    }
+  }
+
+  .keyword-btn {
+    li {
+      @apply my-1 mr-2;
+    }
+  }
+  section {
+    @apply border-b-2 border-gray-50 mb-8;
   }
 }
-.boldText {
-  @apply font-semibold text-2xl;
-}
 
-.selected {
-  @apply border-b-4 border-mainText-color focus:border-b-4 transition ease-in-out;
-}
+// .media-list {
+//   li {
+//     @apply inline-block m-0 mr-6 text-lg font-semibold;
+//   }
+// }
+// .boldText {
+//   @apply font-semibold text-2xl;
+// }
 
-.strong-block {
-  strong {
-    @apply block;
-  }
-}
+// .selected {
+//   @apply border-b-4 border-mainText-color focus:border-b-4 transition ease-in-out;
+// }
 
-.keyword-btn {
-  li {
-    @apply my-1 mr-2;
-  }
-}
+// .strong-block {
+//   strong {
+//     @apply block;
+//   }
+// }
+
+// .keyword-btn {
+//   li {
+//     @apply my-1 mr-2;
+//   }
+// }
 
 html {
   /* custom scrollbar */

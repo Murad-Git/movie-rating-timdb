@@ -13,7 +13,7 @@ interface Props {
     };
     links?: Object;
     homepage?: string;
-    keywords: [{ id: number; name: string }];
+    keywords?: [{ id: number; name: string }];
   };
 }
 

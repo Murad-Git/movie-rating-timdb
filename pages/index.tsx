@@ -1,18 +1,52 @@
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 // import Image from 'next/image';
 import Header from '../src/components/UI/Header';
 import Nav from '../src/components/UI/Nav';
 import Results from '../src/components/main/Results';
-import requests from '../src/utils/requests';
-import React, { useEffect, useState } from 'react';
-import { GetServerSideProps, NextPage } from 'next';
-import { TrendingTypes } from '../types/mainTypings';
+import requests, { IMG_URL } from '../src/utils/requests';
+import React, { useEffect, useRef, useState } from 'react';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import Image from 'next/image';
+import { MainTypes, ServerProps } from '../types/mainTypings';
+import NavTwo from '../src/components/UI/NavTwo';
+import ContentWrapper from '../src/components/UI/ContentWrapper';
+import MainController from '../src/components/main/mainController';
+import MediaScroller from '../src/components/movie/MediaScroller';
+import { mainPageTitles } from '../src/utils/helpers';
 
 interface Props {
-  results: TrendingTypes;
+  trends: MainTypes;
+  discover: MainTypes;
 }
 
-const Home: NextPage<Props> = ({ results }) => {
+const Home: NextPage<Props> = ({ discover, trends }) => {
+  const [hasMounted, setHasMounted] = React.useState(false);
+  // console.log(
+  //   ` trends : ${JSON.stringify(
+  //     { trends },
+  //     null,
+  //     4
+  //   )}-------------------------------`
+  // );
+  const heroImg =
+    trends.results[Math.floor(Math.random() * trends.results.length)];
+  const style: React.CSSProperties = {
+    backgroundImage: `linear-gradient(to right, rgba(3,37,65, 0.8) 0%, #151a1f7f 100%), url('https://www.themoviedb.org/t/p/w1280_and_h720_multi_faces/${heroImg.backdrop_path}')`,
+    width: 'inherit',
+    height: 'calc(100vh/2)',
+    backgroundPosition: 'top, center',
+    backgroundSize: 'cover',
+    minHeight: '300px',
+    backgroundRepeat: 'no-repeat',
+
+    margin: '0 auto',
+  };
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  // if (!hasMounted) return null;
+
   return (
     <div>
       <Head>
@@ -21,29 +55,93 @@ const Home: NextPage<Props> = ({ results }) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Header />
-
-      <Nav />
-
-      <Results results={results.results} />
+      <NavTwo />
+      <main className='main flex flex-col justify-center mt-[50px] md:mt-[64px] bg-slate-500 lg:w-10/12 mx-auto'>
+        <section className='hidden md:block discover-media border-none'>
+          <div
+            className='discover-img w-full h-full bg-no-repeat bg-cover bg-right-top'
+            style={hasMounted ? style : undefined}
+          ></div>
+        </section>
+        <section className='trends px-5 lg:px-10 mt-5 md:mt-8'>
+          <div className='menu flex items-center mb-5'>
+            <h3 className='mr-12 boldText'>Trending</h3>
+            <MainController menu={mainPageTitles.trendMenu} />
+          </div>
+          <div>
+            <MediaScroller
+              mainMedia={trends.results}
+              height={550}
+              width={400}
+            />
+          </div>
+        </section>
+        <section className='discovery px-5 lg:px-10 mt-5 md:mt-8'>
+          <div className='menu flex items-center mb-5'>
+            <h3 className='mr-12 boldText'>Discovery</h3>
+            <MainController menu={mainPageTitles.discoverMenu} />
+          </div>
+          <div>
+            <MediaScroller
+              mainMedia={discover.results}
+              height={550}
+              width={400}
+            />
+          </div>
+        </section>
+      </main>
+      {/* <Results results={results.results} /> */}
     </div>
   );
 };
 
+{
+  /* <Header /> */
+}
+
+{
+  /* <Nav /> */
+}
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { genre } = context.query;
+export const getServerSideProps: ServerProps = async (context) => {
+  // const { genre } = context.query;
 
-  const request = await fetch(
-    `https://api.themoviedb.org/3${
-      requests[genre]?.url || requests.fetchTrending.url
-    }`
-  ).then((res) => res.json());
+  // const request = await fetch(
+  //   `https://api.themoviedb.org/3${
+  //     requests[genre]?.url || requests.fetchTrending.url
+  //   }`
+  // ).then((res) => res.json());
+  try {
+    const [discoverUrl, trendUrl] = requests('main');
+    const data = await Promise.allSettled([
+      fetch(discoverUrl),
+      fetch(trendUrl),
+    ]);
+    const response = (
+      data.find((res) => res.status === 'fulfilled') as
+        | PromiseFulfilledResult<string>
+        | undefined
+    )?.value;
+    if (!response) {
+      const error = (
+        data.find((res) => res.status === 'rejected') as
+          | PromiseRejectedResult
+          | undefined
+      )?.reason;
+      throw new Error(error);
+    }
+    const [discRes, trendRes] = data;
+    const discover = await discRes.value.json();
+    const trends = await trendRes.value.json();
 
-  return {
-    props: {
-      results: request,
-    },
-  };
+    return {
+      props: {
+        discover,
+        trends,
+      },
+    };
+  } catch (error) {
+    throw new Error(error);
+  }
 };

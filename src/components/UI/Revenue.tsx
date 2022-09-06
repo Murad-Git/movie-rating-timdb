@@ -1,7 +1,16 @@
 import React from 'react';
 import { formatNum } from '../../utils/helpers';
 
-const Revenue = ({ revenue }) => {
+interface Props {
+  revenue: {
+    budget: number;
+    revenue: number;
+    status: string;
+    language: string;
+  };
+}
+
+const Revenue = ({ revenue }: Props) => {
   const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
   // const languageName = languageNames.of(revenue.language);
   return (

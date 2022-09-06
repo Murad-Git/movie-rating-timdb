@@ -15,7 +15,7 @@ const Thumbnail = ({ result }: Props) => {
     <Link
       href={`/movie/${urlTitle(
         result.id,
-        result.title || result.original_name
+        result?.title || result?.original_name
       )}`}
     >
       {/* <Link href={`/movie/${result.id}-${title}`}> */}
