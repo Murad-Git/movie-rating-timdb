@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Header from '../src/components/UI/Header';
 import Nav from '../src/components/UI/Nav';
 import Results from '../src/components/main/Results';
-import requests, { IMG_URL } from '../src/utils/requests';
+import requests, { API_URL, BASE_URL, IMG_URL } from '../src/utils/requests';
 import React, { useEffect, useRef, useState } from 'react';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import Image from 'next/image';
@@ -14,14 +14,19 @@ import ContentWrapper from '../src/components/UI/ContentWrapper';
 import MainController from '../src/components/main/mainController';
 import MediaScroller from '../src/components/movie/MediaScroller';
 import { mainPageTitles } from '../src/utils/helpers';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../src/store/store';
 interface Props {
   trends: MainTypes;
   discover: MainTypes;
 }
 
-const Home: NextPage<Props> = ({ discover, trends }) => {
+const Home: NextPage<Props> = ({ trends, discover }) => {
   const [hasMounted, setHasMounted] = React.useState(false);
+
+  const { trendType } = useSelector((state: RootState) => state.media);
+  const { discoverType } = useSelector((state: RootState) => state.media);
+
   // console.log(
   //   ` trends : ${JSON.stringify(
   //     { trends },
@@ -30,7 +35,9 @@ const Home: NextPage<Props> = ({ discover, trends }) => {
   //   )}-------------------------------`
   // );
   const heroImg =
-    trends.results[Math.floor(Math.random() * trends.results.length)];
+    trends[trendType].results[
+      Math.floor(Math.random() * trends[trendType].results.length)
+    ];
   const style: React.CSSProperties = {
     backgroundImage: `linear-gradient(to right, rgba(3,37,65, 0.8) 0%, #151a1f7f 100%), url('https://www.themoviedb.org/t/p/w1280_and_h720_multi_faces/${heroImg.backdrop_path}')`,
     width: 'inherit',
@@ -56,7 +63,7 @@ const Home: NextPage<Props> = ({ discover, trends }) => {
       </Head>
 
       <NavTwo />
-      <main className='main flex flex-col justify-center mt-[50px] md:mt-[64px] bg-slate-500 lg:w-10/12 mx-auto'>
+      <main className='main flex flex-col justify-center mt-[50px] md:mt-[64px] bg-slate-500 xl:w-10/12 mx-auto'>
         <section className='hidden md:block discover-media border-none'>
           <div
             className='discover-img w-full h-full bg-no-repeat bg-cover bg-right-top'
@@ -65,12 +72,12 @@ const Home: NextPage<Props> = ({ discover, trends }) => {
         </section>
         <section className='trends px-5 lg:px-10 mt-5 md:mt-8'>
           <div className='menu flex items-center mb-5'>
-            <h3 className='mr-12 boldText'>Trending</h3>
+            <h3 className='mr-12 pageHeader m-0'>Trending</h3>
             <MainController menu={mainPageTitles.trendMenu} />
           </div>
           <div>
             <MediaScroller
-              mainMedia={trends.results}
+              mainMedia={trends[trendType].results}
               height={550}
               width={400}
             />
@@ -78,12 +85,12 @@ const Home: NextPage<Props> = ({ discover, trends }) => {
         </section>
         <section className='discovery px-5 lg:px-10 mt-5 md:mt-8'>
           <div className='menu flex items-center mb-5'>
-            <h3 className='mr-12 boldText'>Discovery</h3>
+            <h3 className='mr-12 pageHeader m-0'>Discover</h3>
             <MainController menu={mainPageTitles.discoverMenu} />
           </div>
           <div>
             <MediaScroller
-              mainMedia={discover.results}
+              mainMedia={discover[discoverType].results}
               height={550}
               width={400}
             />
@@ -105,40 +112,88 @@ const Home: NextPage<Props> = ({ discover, trends }) => {
 export default Home;
 
 export const getServerSideProps: ServerProps = async (context) => {
-  // const { genre } = context.query;
-
-  // const request = await fetch(
-  //   `https://api.themoviedb.org/3${
-  //     requests[genre]?.url || requests.fetchTrending.url
-  //   }`
-  // ).then((res) => res.json());
   try {
-    const [discoverUrl, trendUrl] = requests('main');
-    const data = await Promise.allSettled([
-      fetch(discoverUrl),
-      fetch(trendUrl),
-    ]);
-    const response = (
-      data.find((res) => res.status === 'fulfilled') as
-        | PromiseFulfilledResult<string>
-        | undefined
-    )?.value;
-    if (!response) {
-      const error = (
-        data.find((res) => res.status === 'rejected') as
-          | PromiseRejectedResult
-          | undefined
-      )?.reason;
-      throw new Error(error);
-    }
-    const [discRes, trendRes] = data;
-    const discover = await discRes.value.json();
-    const trends = await trendRes.value.json();
+    // console.log(
+    //   `context: ${JSON.stringify(
+    //     { context },
+    //     null,
+    //     4
+    //   )}-------------------------------`
+    // );
 
+    const [trendDayUrl, trendWeekUrl, discoverMovieUrl, discoverTvUrl] =
+      requests('main');
+
+    const data = await Promise.allSettled(
+      [trendDayUrl, trendWeekUrl, discoverMovieUrl, discoverTvUrl].map((url) =>
+        fetch(url)
+      )
+    );
+
+    // const data = await Promise.allSettled([
+    //   fetch(discoverUrl),
+    //   fetch(trendUrl),
+    // ]);
+    // const response = (
+    //   data.find((res) => res.status === 'fulfilled') as
+    //     | PromiseFulfilledResult<string>
+    //     | undefined
+    // )?.value;
+    // if (!response) {
+    //   const error = (
+    //     data.find((res) => res.status === 'rejected') as
+    //       | PromiseRejectedResult
+    //       | undefined
+    //   )?.reason;
+    //   throw new Error(error);
+    // }
+    const [trendDRes, trendWRes, discMRes, discTRes] = data;
+    const trendDay = await trendDRes.value.json();
+    const trendWeek = await trendWRes.value.json();
+    const discMovie = await discMRes.value.json();
+    const discTv = await discTRes.value.json();
+    // console.log(
+    //   ` trendDay : ${JSON.stringify(
+    //     { trendDay },
+    //     null,
+    //     4
+    //   )}-------------------------------`
+    // );
+    // const discover = await discRes.value.json();
+    // const trends = await trendRes.value.json();
+
+    // const requestTrend = await fetch(
+    //   `${BASE_URL}trending/all/day?language=en-US&${API_URL}`
+    // );
+    // const requestDiscover = await fetch(
+    //   `${BASE_URL}discover/movie?${API_URL}&language=en-US&sort_by=popularity.desc`
+    // );
+    // const requestTrend = await fetch(
+    //   `${BASE_URL}trending/all/${trend}?language=en-US&${API_URL}`
+    // );
+    // const requestDiscover = await fetch(
+    //   `${BASE_URL}discover/${discover}?${API_URL}&language=en-US&sort_by=popularity.desc`
+    // );
+
+    // const responseTrend = await requestTrend.json();
+    // const responseDiscover = await requestDiscover.json();
+    // console.log(
+    //   `context: ${JSON.stringify(
+    //     { context },
+    //     null,
+    //     4
+    //   )}-------------------------------`
+    // );
     return {
       props: {
-        discover,
-        trends,
+        trends: {
+          day: trendDay,
+          week: trendWeek,
+        },
+        discover: {
+          movie: discMovie,
+          tv: discTv,
+        },
       },
     };
   } catch (error) {

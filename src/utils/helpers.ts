@@ -28,26 +28,34 @@ export const urlTitle = (id: number, title?: string) => {
 export const mainPageTitles = {
   trendMenu: [
     {
-      title: 'Movies',
-      class: 'movie',
+      title: 'Today',
+      class: 'day',
       key: 'trendType',
     },
     {
-      title: 'TV Shows',
-      class: 'tv',
+      title: 'This week',
+      class: 'week',
       key: 'trendType',
     },
   ],
   discoverMenu: [
     {
-      title: 'Daily',
-      class: 'day',
+      title: 'Movies',
+      class: 'movie',
       key: 'discoverType',
     },
     {
-      title: 'Weekly',
-      class: 'week',
+      title: 'TV Shows',
+      class: 'tv',
       key: 'discoverType',
     },
   ],
 };
+
+// console.log(
+//   `keywords: ${JSON.stringify(
+//     { keywords },
+//     null,
+//     4
+//   )}-------------------------------`
+// );

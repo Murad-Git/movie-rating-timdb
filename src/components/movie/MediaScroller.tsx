@@ -4,14 +4,17 @@ import {
   Video,
   Backdrops,
   Posters,
-  Recommendation,
-  Cast,
+  MovieRecommendation,
+  MovieCast,
 } from '../../../types/movieTypings';
+import { TvRecommendation } from '../../../types/tvTypings';
+import { TvCast } from '../../../types/tvTypings';
 import { MainType } from '../../../types/mainTypings';
 import { filterSeven } from '../../utils/helpers';
 import { useSelector } from 'react-redux';
 import { mediaValue } from '../../store/slices/mainSlice';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { RootState } from '../../store/store';
 
 interface MediaSection {
   videos: {
@@ -25,9 +28,8 @@ interface MediaSection {
 
 interface MediaType {
   media?: MediaSection;
-  cast?: Cast[];
-  recommendations?: Recommendation[];
-  mainMedia?: MainType[];
+  cast?: MovieCast[] | TvCast[];
+  mainMedia?: MainType[] | MovieRecommendation[] | TvRecommendation[];
   height: number;
   width: number;
 }
@@ -35,14 +37,23 @@ interface MediaType {
 const MediaScroller = ({
   media,
   cast,
-  recommendations,
   mainMedia,
   height,
   width,
 }: MediaType) => {
   const currentMedia = useSelector(mediaValue);
+
+  // const curTrend = 'media_type' in mainMedia ? mainMedia.filter((item:MainType)=>item.media_type === trendType) : ''
+  // const getTrend = (type) => {
+  //   const media = {
+  //     movie: mainMedia?.filter(media=>media.media_type === 'movie'),
+  //     tv:
+  //   }
+  // }
+
   const scrollerRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
+  // media from movie page
   const getMedia: any = (media: MediaSection) => {
     if (media) {
       const { videos, images } = media;
@@ -91,7 +102,7 @@ const MediaScroller = ({
         {cast &&
           cast
             ?.filter((actor, index) => index < 12)
-            .map((media: Cast, index: number) => (
+            .map((media: MovieCast | TvCast, index: number) => (
               <MediaWrapper
                 cast={media}
                 height={height}
@@ -99,15 +110,7 @@ const MediaScroller = ({
                 key={index}
               />
             ))}
-        {recommendations &&
-          recommendations.map((media: Recommendation, index: number) => (
-            <MediaWrapper
-              recommendation={media}
-              height={height}
-              width={width}
-              key={index}
-            />
-          ))}
+
         {mainMedia &&
           mainMedia.map((media, index) => (
             <MediaWrapper

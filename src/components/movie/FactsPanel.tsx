@@ -6,8 +6,8 @@ import Socials from '../UI/Socials';
 interface Props {
   facts: {
     revenue: {
-      budget: number;
-      revenue: number;
+      budget?: number;
+      revenue?: number;
       status: string;
       language: string;
     };
@@ -20,7 +20,8 @@ interface Props {
 const FactsPanel = ({ facts }: Props) => {
   return (
     <div className='flex justify-between lg:flex-col'>
-      <Revenue revenue={facts.revenue} />
+      <h1 className='boldText'>Facts</h1>
+      {facts.revenue && <Revenue revenue={facts.revenue} />}
       <div className='keywords w-1/3  lg:w-full'>
         <div className='social_links lg:mb-6'>
           <Socials links={facts.links} homepage={facts.homepage} />

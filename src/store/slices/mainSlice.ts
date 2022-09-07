@@ -12,8 +12,8 @@ export interface MediaState {
 
 const initialState: MediaState = {
   mediaType: 'most',
-  trendType: 'movie',
-  discoverType: 'day',
+  trendType: 'day',
+  discoverType: 'movie',
   url: '',
   videoTitle: '',
   shown: false,

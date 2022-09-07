@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Head from 'next/head';
 import { GetServerSideProps, NextPage } from 'next';
 import Header from '../../src/components/UI/Header';
 import MediaScroller from '../../src/components/movie/MediaScroller';
@@ -12,6 +13,8 @@ import { API_URL, MOVIE_URL, IMG_URL } from '../../src/utils/requests';
 import FactsPanel from '../../src/components/movie/FactsPanel';
 import { Movie } from '../../types/movieTypings';
 import ContentWrapper from '../../src/components/UI/ContentWrapper';
+import HeroSection from '../../src/components/UI/HeroSection';
+import NavTwo from '../../src/components/UI/NavTwo';
 
 interface Props {
   movie: Movie;
@@ -43,90 +46,20 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
 
   return (
     <>
+      <Head>
+        <title>{movie.original_title}</title>
+      </Head>
+      <NavTwo />
       <div className=' flex-col flex-auto min-h-full h-auto relative top-0 left-0 '>
-        <Header />
         <main className='main box-border justify-center relative'>
           {/* Hero section */}
-          <div className='header text-xl'>
-            <div className='hero-img object-cover hidden lg:block w-full'>
-              <Image
-                className=''
-                src={`https://www.themoviedb.org/t/p/w1280_and_h720_multi_faces/${movie.backdrop_path}`}
-                // src={`https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${movie.backdrop_path}`}
-                alt='backdrop'
-                objectFit='cover'
-                layout='responsive'
-                height={250}
-                width={700}
-                // height={250}
-                // width={700}
-              />
-            </div>
-            <section className='original-header px-5 xl:px-16 py-5 md:grid md:grid-cols-2 md:gap-5 xl:gap-4 border-b-2 border-gray-50 mb-6 justify-center'>
-              <div className='poster_wrapper mb-4 lg:max-w-sm 2xl:max-w-md relative lg:left-1/4'>
-                <Image
-                  className='rounded'
-                  layout='responsive'
-                  src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                  sizes='(min-width: 75em) 33vw,
-              (min-width: 48em) 50vw,
-              100vw'
-                  height={700}
-                  objectFit='cover'
-                  width={500}
-                  alt='poster'
-                />
-              </div>
-              <div className='header_poster_wrapper'>
-                <div className='title mb-6'>
-                  <h1 className='text-4xl font-semibold'>
-                    <a href={`${movie?.homepage}`}>{movie.original_title}</a>
-                  </h1>
-                  <div className='subheader'>
-                    <ul className='flex'>
-                      <li>
-                        {movie.release_date.substring(0, 4)} $ (
-                        {movie.production_countries.map((c) => c.iso_3166_1)}) •
-                      </li>
-                      <li>{movie.genres.map((genre) => genre.name)} • </li>
-                      <li>{secondsToHm(movie.runtime)}</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className='actions mb-5'>
-                  <ActionsList
-                    voteAgerage={Math.round(movie.vote_average * 100) / 100}
-                    productions={movie.production_companies}
-                    trailers={movie.videos}
-                  />
-                </div>
-                <div className='header_info'>
-                  {movie.tagline && (
-                    <h3 className='font-light my-2 text-xl'>
-                      <em>{movie.tagline}</em>
-                    </h3>
-                  )}
-                  {movie.overview ? (
-                    <>
-                      <h2 className='mt-4 mb-2 text-3xl font-bold'>Overview</h2>
-                      <div className='text-lg text-justify'>
-                        <p>{movie.overview}</p>
-                      </div>
-                    </>
-                  ) : (
-                    <div className='text-lg text-justify'>
-                      <p>Could not find any overview</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </section>
-          </div>
+          <HeroSection media={movie} />
           {/* Section media */}
           <ContentWrapper>
             <div className='main-content col-span-3'>
               {/* cast */}
-              <section className='cast border-b-2 border-gray-50 mb-6'>
+              <section className='cast  mb-6'>
+                <h2 className='pageHeader'>Cast</h2>
                 <div className='mb-5'>
                   <MediaScroller
                     cast={movie.credits.cast}
@@ -137,9 +70,9 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
                 </div>
               </section>
               {/* Media */}
-              <section className='border-b-2 border-gray-50 mb-6'>
-                <div className='menu flex items-center mb-5 '>
-                  <h3 className='mr-12 boldText'>Media</h3>
+              <section className=' mb-6'>
+                <div className='menu flex items-center mb-8'>
+                  <h3 className='mr-12 pageHeader m-0'>Media</h3>
                   <MediaController media={media} />
                 </div>
                 <MediaScroller media={media} height={370} width={494} />
@@ -147,7 +80,8 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
                   width={500} */}
               </section>
               {/* Collections */}
-              <section className='relative border-b-2 border-gray-50 mb-6'>
+              <section className='relative mb-6'>
+                <h2 className='pageHeader'>Collections</h2>
                 {movie.belongs_to_collection ? (
                   <>
                     <div className='collection-hero'>
@@ -175,9 +109,9 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
                 )}
               </section>
               {/* Recommendations */}
-              <section className='border-b-2 border-gray-50 mb-6'>
-                <div className='menu mb-3'>
-                  <h3 className='boldText'>Recommendations</h3>
+              <section className=' mb-6'>
+                <div className='menu'>
+                  <h3 className='pageHeader'>Recommendations</h3>
                 </div>
                 {movie.recommendations.results.length > 0 ? (
                   <MediaScroller
@@ -211,11 +145,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const movieId = (context.params?.movieId as string).split('-')[0];
 
   // console.log(`context params:${context.params.split("-")[0]}=======`);
-  const query = '616037';
+  // const query = '616037';
   // console.log(`context of movie${context.params.movie}`);
   const request = await fetch(
     `${MOVIE_URL}${movieId}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images,collection`
   );
+
   const response = await request.json();
   // console.log(`res: ${response}`);
   return {

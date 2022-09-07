@@ -3,8 +3,8 @@ import { formatNum } from '../../utils/helpers';
 
 interface Props {
   revenue: {
-    budget: number;
-    revenue: number;
+    budget?: number;
+    revenue?: number;
     status: string;
     language: string;
   };
@@ -33,22 +33,26 @@ const Revenue = ({ revenue }: Props) => {
               {languageNames.of(revenue.language)}
             </p>
           </li>
-          <li>
-            <p>
-              <strong>
-                <bdi>Budget</bdi>
-              </strong>
-              {formatNum.format(revenue.budget)}
-            </p>
-          </li>
-          <li>
-            <p>
-              <strong>
-                <bdi>Revenue</bdi>
-              </strong>
-              {formatNum.format(revenue.revenue)}
-            </p>
-          </li>
+          {revenue.budget && (
+            <li>
+              <p>
+                <strong>
+                  <bdi>Budget</bdi>
+                </strong>
+                {formatNum.format(revenue.budget)}
+              </p>
+            </li>
+          )}
+          {revenue.revenue && (
+            <li>
+              <p>
+                <strong>
+                  <bdi>Revenue</bdi>
+                </strong>
+                {formatNum.format(revenue.revenue)}
+              </p>
+            </li>
+          )}
         </ul>
       </div>
     </div>

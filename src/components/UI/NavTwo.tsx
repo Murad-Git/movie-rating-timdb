@@ -27,17 +27,10 @@ const NavTwo = () => {
       } fixed top-0 left-0 z-10 w-full h-[50px] md:h-[64px] bg-gray-900 text-white transition-all duration-300 m-0 px-10 lg:px-40`}
     >
       <nav className='content'>
-        {/* <div className='nav_wrapper'>
-          <ul className='flex justify-start items-center text-lg child:mr-2'>
-            <li>Movies</li>
-            <li>TV Shows</li>
-            <li>People</li>
-          </ul>
-        </div> */}
         <div className='container flex flex-wrap justify-between items-center mx-auto'>
           <div className='menu flex items-center'>
             <div className='logo mr-5'>
-              <a href='#' className='flex items-center'>
+              <a href='/' className='flex items-center'>
                 <img src='/icon.png' className='mr-3 h-6 sm:h-8' alt='Logo' />
                 <span className='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>
                   Movies

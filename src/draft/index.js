@@ -385,7 +385,7 @@ const Movie = ({ movie, cast }) => {
             title='title of video'
           ></iframe>
         </div> */}
-        <div className='hidden video-player flex fixed flex-col h-1/2 w-full z-50 overflow-hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+        <div className='video-player flex fixed flex-col h-1/2 w-full z-50 overflow-hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           <div className='bg-black px-1 flex justify-between'>
             <h2>Title of video</h2>
             <button>x</button>

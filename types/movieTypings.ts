@@ -57,9 +57,9 @@ export interface Movie {
   videos: {
     results: [Video];
   };
-  recommendations: Recommendations;
+  recommendations: MovieRecommendations;
   credits: {
-    cast: [Cast];
+    cast: [MovieCast];
   };
   external_ids: {
     imdb_id: string;
@@ -86,7 +86,7 @@ export interface Movie {
     posters: [Posters];
   };
 }
-export interface Cast {
+export interface MovieCast {
   adult: boolean;
   gender: number;
   id: number;
@@ -130,12 +130,13 @@ export interface Posters {
   vote_count: number;
   width: number;
 }
-export interface Recommendation {
+export interface MovieRecommendation {
   adult: boolean;
   backdrop_path: string;
   id: number;
   title: string;
   original_language: string;
+  name?: string;
   original_name?: string;
   original_title: string;
   overview: string;
@@ -150,9 +151,9 @@ export interface Recommendation {
   vote_count: number;
 }
 
-export interface Recommendations {
+export interface MovieRecommendations {
   page: number;
-  results: [Recommendation];
+  results: [MovieRecommendation];
   total_pages: number;
   total_results: number;
 }

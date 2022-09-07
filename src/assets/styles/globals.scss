@@ -11,7 +11,7 @@
 @layer components {
   .media-list {
     li {
-      @apply inline-block m-0 mr-6 text-lg font-semibold;
+      @apply inline-block mr-6 text-lg font-semibold;
     }
   }
   .boldText {
@@ -35,6 +35,9 @@
   }
   section {
     @apply border-b-2 border-gray-50 mb-8;
+  }
+  .pageHeader {
+    @apply font-semibold text-3xl mb-8;
   }
 }
 

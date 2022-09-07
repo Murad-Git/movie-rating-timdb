@@ -19,7 +19,7 @@ const MediaController = ({ media }: MediaSection) => {
   const dispatch = useDispatch();
 
   return (
-    <ul className='flex w-full media-list '>
+    <ul className='flex w-full media-list flex-col lg:flex-row child:mb-1 lg:mb-0 '>
       <li className={currentMedia === 'most' ? 'selected' : ''}>
         <a
           className='cursor-pointer'

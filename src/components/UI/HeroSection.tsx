@@ -1,20 +1,22 @@
 import React from 'react';
 import Image from 'next/image';
 import { Movie } from '../../../types/movieTypings';
+import { TV } from '../../../types/tvTypings';
 import { secondsToHm } from '../../utils/helpers';
 import ActionsList from '../movie/ActionsList';
+import { IMG_URL } from '../../utils/requests';
 
 interface Props {
-  movie: Movie;
+  media: Movie | TV;
 }
 
-const HeroSection = ({ movie }: Props) => {
+const HeroSection = ({ media }: Props) => {
   return (
     <div className='header text-xl'>
       <div className='hero-img object-cover hidden lg:block w-full'>
         <Image
           className=''
-          src={`https://www.themoviedb.org/t/p/w1280_and_h720_multi_faces/${movie.backdrop_path}`}
+          src={`https://www.themoviedb.org/t/p/w1280_and_h720_multi_faces/${media.backdrop_path}`}
           // src={`https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${movie.backdrop_path}`}
           alt='backdrop'
           objectFit='cover'
@@ -30,7 +32,7 @@ const HeroSection = ({ movie }: Props) => {
           <Image
             className='rounded'
             layout='responsive'
-            src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+            src={`${IMG_URL}/${media.poster_path}`}
             sizes='(min-width: 75em) 33vw,
               (min-width: 48em) 50vw,
               100vw'
@@ -38,42 +40,54 @@ const HeroSection = ({ movie }: Props) => {
             objectFit='cover'
             width={500}
             alt='poster'
+            priority
           />
         </div>
         <div className='header_poster_wrapper'>
           <div className='title mb-6'>
             <h1 className='text-4xl font-semibold'>
-              <a href={`${movie?.homepage}`}>{movie.original_title}</a>
+              <a href={`${media?.homepage}`}>
+                {'original_title' in media && media.original_title}
+                {'original_name' in media && media.original_name}
+              </a>
             </h1>
             <div className='subheader'>
-              <ul className='flex'>
+              <ul className='flex child:mx-1'>
                 <li>
-                  {movie.release_date.substring(0, 4)} $ (
-                  {movie.production_countries.map((c) => c.iso_3166_1)}) •
+                  {'release_date' in media
+                    ? media.release_date.substring(0, 4)
+                    : media.first_air_date.substring(0, 4)}{' '}
+                  $ ({media.production_countries.map((c) => c.iso_3166_1)}) •
                 </li>
-                <li>{movie.genres.map((genre) => genre.name)} • </li>
-                <li>{secondsToHm(movie.runtime)}</li>
+                <li>{media.genres.map((genre) => ` ${genre.name} `)} • </li>
+                <li>
+                  {secondsToHm(
+                    'runtime' in media
+                      ? media.runtime
+                      : media.episode_run_time[0]
+                  )}
+                </li>
               </ul>
             </div>
           </div>
           <div className='actions mb-5'>
             <ActionsList
-              voteAgerage={Math.round(movie.vote_average * 100) / 100}
-              productions={movie.production_companies}
-              trailers={movie.videos}
+              voteAgerage={Math.round(media.vote_average * 100) / 100}
+              productions={media.production_companies}
+              trailers={media.videos}
             />
           </div>
           <div className='header_info'>
-            {movie.tagline && (
+            {media.tagline && (
               <h3 className='font-light my-2 text-xl'>
-                <em>{movie.tagline}</em>
+                <em>{media.tagline}</em>
               </h3>
             )}
-            {movie.overview ? (
+            {media.overview ? (
               <>
                 <h2 className='mt-4 mb-2 text-3xl font-bold'>Overview</h2>
                 <div className='text-lg text-justify'>
-                  <p>{movie.overview}</p>
+                  <p>{media.overview}</p>
                 </div>
               </>
             ) : (

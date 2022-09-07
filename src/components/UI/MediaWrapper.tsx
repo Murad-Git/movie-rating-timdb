@@ -5,8 +5,8 @@ import {
   Video,
   Backdrops,
   Posters,
-  Recommendation,
-  Cast,
+  MovieRecommendation,
+  MovieCast,
 } from '../../../types/movieTypings';
 import { MainType } from '../../../types/mainTypings';
 import { useDispatch } from 'react-redux';
@@ -15,28 +15,45 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay, faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { urlTitle } from '../../utils/helpers';
+import { TvRecommendation, TvCast } from '../../../types/tvTypings';
 
 interface MediaType {
   media?: Video | Backdrops | Posters;
-  cast?: Cast;
-  mainMedia?: MainType | Recommendation;
+  cast?: MovieCast | TvCast;
+  mainMedia?: MainType | MovieRecommendation | TvRecommendation;
   height: number;
   width: number;
 }
 
 const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
   const dispatch = useDispatch();
+  const mainPageLink =
+    mainMedia && mainMedia.media_type === 'movie'
+      ? `/movie/${urlTitle(
+          mainMedia.id,
+          mainMedia.title || mainMedia.original_title
+        )}`
+      : mainMedia &&
+        `/tv/${urlTitle(
+          mainMedia.id,
+          mainMedia.original_name || mainMedia.name
+        )}`;
+
   return (
-    <div className={`inline-block mr-4 mb-2 group text-black`}>
+    <div className={`inline-block mr-1 lg:mr-4 mb-2 group text-black`}>
       <div
         className={`image_content ${
-          cast ? 'w-[15rem]' : mainMedia ? 'w-[15rem]' : 'w-[30rem]'
+          cast
+            ? 'w-[10rem] lg:w-[15rem]'
+            : mainMedia
+            ? 'w-[10rem] md:w-[15rem]'
+            : 'w-[30rem]'
         } `}
       >
         {/* cast */}
         {cast && (
           <div className='bg-mainText-color rounded-lg border  shadow-lg border-mainText-color'>
-            <Link href='#'>
+            <Link href=''>
               <div>
                 <Image
                   layout='responsive'
@@ -44,7 +61,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                   className='rounded-t-lg object-cover'
                   src={
                     cast.profile_path
-                      ? `https://image.tmdb.org/t/p/original/${cast.profile_path}`
+                      ? `${IMG_URL}/${cast.profile_path}`
                       : '/no-person.png'
                   }
                   height={height}
@@ -52,7 +69,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                   alt='actor'
                 />
                 <div className='p-3'>
-                  <p className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
+                  <p className='text-lg lg:text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
                     <a
                       className='hover:text-gray-400'
                       target='_blank'
@@ -61,7 +78,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                       {cast.name}
                     </a>
                   </p>
-                  <p className='font-normal text-gray-700 dark:text-gray-400 break-words text-lg'>
+                  <p className='font-normal text-gray-700 dark:text-gray-400 break-words text-md lg:text-lg'>
                     {cast.character}
                   </p>
                 </div>
@@ -115,12 +132,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
         )}
         {/* media list */}
         {mainMedia && (
-          <Link
-            href={`/movie/${urlTitle(
-              mainMedia.id,
-              mainMedia.title || mainMedia.original_title
-            )}`}
-          >
+          <Link href={mainPageLink as string}>
             <div className='bg-mainText-color rounded-lg  shadow-lg cursor-pointer'>
               <Image
                 layout='responsive'
@@ -136,7 +148,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                 alt='actor'
               />
               <div className='p-3'>
-                <div className='whitespace-pre-wrap break-words text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1 md:mb-3 min-h-[5rem]'>
+                <div className='whitespace-pre-wrap break-words text-lg lg:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1 md:mb-3 min-h-[6rem]'>
                   <a
                     className='hover:text-gray-400 cursor-pointer'
                     target='_blank'
@@ -145,7 +157,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                     {mainMedia.original_name || mainMedia.title}
                   </a>
                 </div>
-                <p className='font-normal text-gray-700 dark:text-gray-400 break-words text-md md:text-lg mb-1 md:mb-3'>
+                <p className='text-gray-700 dark:text-gray-400 break-words text-md md:text-lg mb-1 md:mb-3 font-medium'>
                   {(mainMedia.release_date || mainMedia.first_air_date)
                     ?.split('-')
                     .reverse()
@@ -158,7 +170,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                       icon={faStar}
                     />
                   </div>
-                  <div className='text inline-block text-lg '>
+                  <div className='inline-block text-md lg:text-lg font-semibold'>
                     {Math.round(mainMedia.vote_average * 100) / 100}
                   </div>
                 </div>

@@ -9,3 +9,13 @@ declare interface PromiseConstructor {
     Array<{ status: 'fulfilled' | 'rejected'; value?: any; reason?: any }>
   >;
 }
+
+interface PromiseFulfilledResult<T> {
+  status: 'fulfilled';
+  value: T;
+}
+
+interface PromiseRejectedResult {
+  status: 'rejected';
+  reason: any;
+}

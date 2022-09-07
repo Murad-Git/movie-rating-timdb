@@ -111,7 +111,7 @@ export interface TV {
     results: [Video];
   };
 
-  recommendations: Recommendations;
+  recommendations: TvRecommendations;
   images: {
     backdrops: [Backdrops];
     posters: [Posters];
@@ -127,7 +127,7 @@ export interface TV {
     twitter_id?: string;
   };
   credits: {
-    cast: [Cast];
+    cast: [TvCast];
   };
   keywords: {
     keywords?: [
@@ -144,13 +144,13 @@ export interface TV {
     ];
   };
 }
-export interface Recommendations {
+export interface TvRecommendations {
   page: number;
-  results: [Recommendation];
+  results: [TvRecommendation];
   total_pages: number;
   total_results: number;
 }
-export interface Recommendation {
+export interface TvRecommendation {
   adult: boolean;
   backdrop_path: string;
   id: number;
@@ -187,7 +187,7 @@ export interface Posters {
   vote_count: number;
   width: number;
 }
-export interface Cast {
+export interface TvCast {
   adult: boolean;
   gender: number;
   id: number;
