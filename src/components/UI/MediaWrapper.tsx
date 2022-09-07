@@ -9,13 +9,13 @@ import {
   MovieCast,
 } from '../../../types/movieTypings';
 import { MainType } from '../../../types/mainTypings';
+import { TvRecommendation, TvCast } from '../../../types/tvTypings';
 import { useDispatch } from 'react-redux';
 import { openVideo } from '../../store/slices/mainSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay, faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { urlTitle } from '../../utils/helpers';
-import { TvRecommendation, TvCast } from '../../../types/tvTypings';
 
 interface MediaType {
   media?: Video | Backdrops | Posters;

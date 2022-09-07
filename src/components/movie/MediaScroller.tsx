@@ -14,7 +14,6 @@ import { filterSeven } from '../../utils/helpers';
 import { useSelector } from 'react-redux';
 import { mediaValue } from '../../store/slices/mainSlice';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
-import { RootState } from '../../store/store';
 
 interface MediaSection {
   videos: {
@@ -42,14 +41,6 @@ const MediaScroller = ({
   width,
 }: MediaType) => {
   const currentMedia = useSelector(mediaValue);
-
-  // const curTrend = 'media_type' in mainMedia ? mainMedia.filter((item:MainType)=>item.media_type === trendType) : ''
-  // const getTrend = (type) => {
-  //   const media = {
-  //     movie: mainMedia?.filter(media=>media.media_type === 'movie'),
-  //     tv:
-  //   }
-  // }
 
   const scrollerRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import { TV } from '../../../types/tvTypings';
 import { IMG_URL } from '../../utils/requests';
 interface Props {
   tv: {

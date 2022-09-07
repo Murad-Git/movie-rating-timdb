@@ -23,7 +23,7 @@ interface Props {
 }
 function ActionsList({ voteAgerage, productions, trailers }: Props) {
   const dispatch = useDispatch();
-  const trailer = trailers.results.find((trailer, index) => trailer.official);
+  const trailer = trailers.results.find((trailer) => trailer.official);
 
   return (
     <ul className='flex items-center child:mr-3 whitespace-nowrap font-semibold text-lg'>

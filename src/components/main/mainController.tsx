@@ -1,7 +1,5 @@
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AnyAction } from 'redux';
 import { changeDiscover, changeTrend } from '../../store/slices/mainSlice';
 import { RootState } from '../../store/store';
 interface Props {
@@ -11,12 +9,11 @@ interface Props {
     key: string;
   }[];
 }
-interface DispatchProps {
-  (item: { title: string; class: string; key: string }): void;
-}
+// interface DispatchProps {
+//   (item: { title: string; class: string; key: string }): void;
+// }
 
 const mainController = ({ menu }: Props) => {
-  const router = useRouter();
   const mediaTypes: { [key: string]: any } = {
     trendType: useSelector((state: RootState) => state.media),
     discoverType: useSelector((state: RootState) => state.media),

@@ -18,8 +18,6 @@ const VideoContent = () => {
 
   return (
     <div className={`top-6 w-full fixed z-50`}>
-      {/* <div className={`${!shown && 'hidden'} top-6 w-full fixed z-50`}> */}
-      {/* <div className='absolute left-2/4 top-1/4 z-50'> */}
       <div className='bg-black left-[5%] w-11/12 relative flex justify-between px-4 py-1'>
         <h2 className='font-semibold text-lg'>{title}</h2>
         <button onClick={() => dispatch(closeVideo())}>
@@ -31,7 +29,6 @@ const VideoContent = () => {
           id='video'
           className='left-[5%] top-0 h-4/5 w-11/12 absolute'
           src={`https://www.youtube.com/embed/${url}`}
-          frameBorder='0'
           width='853'
           height='480'
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'

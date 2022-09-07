@@ -2,19 +2,15 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
 import { GetServerSideProps, NextPage } from 'next';
-import Header from '../../src/components/UI/Header';
 import MediaScroller from '../../src/components/movie/MediaScroller';
-// import { ColorExtractor } from 'react-color-extractor';
 import VideoContent from '../../src/components/movie/VideoContent';
-import { secondsToHm } from '../../src/utils/helpers';
-import ActionsList from '../../src/components/movie/ActionsList';
 import MediaController from '../../src/components/movie/MediaController';
 import { API_URL, MOVIE_URL, IMG_URL } from '../../src/utils/requests';
 import FactsPanel from '../../src/components/movie/FactsPanel';
 import { Movie } from '../../types/movieTypings';
 import ContentWrapper from '../../src/components/UI/ContentWrapper';
 import HeroSection from '../../src/components/UI/HeroSection';
-import NavTwo from '../../src/components/UI/NavTwo';
+import Nav from '../../src/components/UI/Nav';
 
 interface Props {
   movie: Movie;
@@ -49,7 +45,7 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
       <Head>
         <title>{movie.original_title}</title>
       </Head>
-      <NavTwo />
+      <Nav />
       <div className=' flex-col flex-auto min-h-full h-auto relative top-0 left-0 '>
         <main className='main box-border justify-center relative'>
           {/* Hero section */}
