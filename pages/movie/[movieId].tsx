@@ -43,7 +43,7 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
   return (
     <>
       <Head>
-        <title>{movie.original_title}</title>
+        <title>{movie.title}</title>
       </Head>
       <Nav />
       <div className=' flex-col flex-auto min-h-full h-auto relative top-0 left-0 '>

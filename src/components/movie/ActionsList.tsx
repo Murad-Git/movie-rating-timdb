@@ -23,7 +23,9 @@ interface Props {
 }
 function ActionsList({ voteAgerage, productions, trailers }: Props) {
   const dispatch = useDispatch();
-  const trailer = trailers.results.find((trailer) => trailer.official);
+  const trailer = trailers.results.find(
+    (trailer) => trailer.name === 'Official Trailer' && trailer.official
+  );
 
   return (
     <ul className='flex items-center child:mr-3 whitespace-nowrap font-semibold text-lg'>
@@ -68,7 +70,7 @@ function ActionsList({ voteAgerage, productions, trailers }: Props) {
       {trailers && (
         <li>
           <a
-            className='border-none bg-transparent will-change-auto transition-opacity ease-linear 1s hover:opacity-60 flex items-center text-gray-400 cursor-pointer'
+            className='border-none bg-transparent will-change-auto transition-opacity ease-linear 1s hover:opacity-60 flex items-center text-[#F5C518] cursor-pointer'
             onClick={() =>
               dispatch(
                 openVideo({

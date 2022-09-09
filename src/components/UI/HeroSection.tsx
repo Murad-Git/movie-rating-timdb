@@ -45,8 +45,8 @@ const HeroSection = ({ media }: Props) => {
           <div className='title mb-6'>
             <h1 className='text-4xl font-semibold'>
               <a href={`${media?.homepage}`}>
-                {'original_title' in media && media.original_title}
-                {'original_name' in media && media.original_name}
+                {'name' in media && media.name}
+                {'title' in media && media.title}
               </a>
             </h1>
             <div className='subheader'>

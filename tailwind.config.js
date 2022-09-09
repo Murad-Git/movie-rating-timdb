@@ -14,7 +14,7 @@ module.exports = {
       colors: {
         'mainBg-color': '#06202A',
         'mainText-color': '#d1d5db',
-        'accent-color': '#ff893b',
+        'accent-color': '#F5C518',
       },
       screens: {
         '3xl': '2000px',

@@ -34,7 +34,7 @@ const TvPage: NextPage<Props> = ({ tv }) => {
   return (
     <>
       <Head>
-        <title>{tv.original_name}</title>
+        <title>{tv.name}</title>
       </Head>
       <Nav />
       <div className=' flex-col flex-auto min-h-full h-auto relative top-0 left-0 '>

@@ -16,6 +16,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay, faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { urlTitle } from '../../utils/helpers';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface MediaType {
   media?: Video | Backdrops | Posters;
@@ -26,18 +28,31 @@ interface MediaType {
 }
 
 const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
+  const { discoverType } = useSelector((state: RootState) => state.media);
   const dispatch = useDispatch();
+
   const mainPageLink =
-    mainMedia && mainMedia.media_type === 'movie'
-      ? `/movie/${urlTitle(
+    mainMedia && mainMedia.media_type && mainMedia.media_type.length > 0
+      ? `/${mainMedia.media_type}/${urlTitle(
           mainMedia.id,
-          mainMedia.title || mainMedia.original_title
+          mainMedia.title || mainMedia.name
         )}`
       : mainMedia &&
-        `/tv/${urlTitle(
+        `/${discoverType}/${urlTitle(
           mainMedia.id,
-          mainMedia.original_name || mainMedia.name
+          mainMedia.title || mainMedia.name
         )}`;
+  // const mainPageLink =
+  //   mainMedia && mainMedia.media_type === 'movie'
+  //     ? `/movie/${urlTitle(
+  //         mainMedia.id,
+  //         mainMedia.title || mainMedia.title
+  //       )}`
+  //     : mainMedia &&
+  //       `/tv/${urlTitle(
+  //         mainMedia.id,
+  //         mainMedia.original_name || mainMedia.name
+  //       )}`;
 
   return (
     <div className={`inline-block mr-1 lg:mr-4 mb-2 group text-black`}>
@@ -132,7 +147,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
         )}
         {/* media list */}
         {mainMedia && (
-          <Link href={mainPageLink as string}>
+          <Link href={mainPageLink as string} target='_blank'>
             <div className='bg-mainText-color rounded-lg  shadow-lg cursor-pointer'>
               <Image
                 layout='responsive'
@@ -151,7 +166,6 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                 <div className='whitespace-pre-wrap break-words text-lg lg:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1 md:mb-3 min-h-[6rem]'>
                   <a
                     className='hover:text-gray-400 cursor-pointer'
-                    target='_blank'
                     rel='noopener noreferrer'
                   >
                     {mainMedia.original_name || mainMedia.title}

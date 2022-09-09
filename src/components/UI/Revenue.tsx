@@ -33,7 +33,7 @@ const Revenue = ({ revenue }: Props) => {
               {languageNames.of(revenue.language)}
             </p>
           </li>
-          {revenue.budget && (
+          {revenue.budget && revenue.budget > 0 ? (
             <li>
               <p>
                 <strong>
@@ -42,8 +42,12 @@ const Revenue = ({ revenue }: Props) => {
                 {formatNum.format(revenue.budget)}
               </p>
             </li>
+          ) : (
+            <li>
+              <p>Not found</p>
+            </li>
           )}
-          {revenue.revenue && (
+          {revenue.revenue && revenue.revenue > 0 ? (
             <li>
               <p>
                 <strong>
@@ -51,6 +55,10 @@ const Revenue = ({ revenue }: Props) => {
                 </strong>
                 {formatNum.format(revenue.revenue)}
               </p>
+            </li>
+          ) : (
+            <li>
+              <p>Not found</p>
             </li>
           )}
         </ul>
