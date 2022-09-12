@@ -26,7 +26,7 @@ const FactsPanel = ({ facts }: Props) => {
         <div className='social_links lg:mb-6'>
           <Socials links={facts.links} homepage={facts.homepage} />
         </div>
-        <Keywords keywords={facts.keywords} />
+        <Keywords keywords={facts.keywords} className='mb-6' />
       </div>
     </div>
   );

@@ -2,9 +2,10 @@ import React from 'react';
 
 interface Props {
   keywords?: [{ id: number; name: string }];
+  className?: string;
 }
 
-const Keywords = ({ keywords }: Props) => {
+const Keywords = ({ keywords, className }: Props) => {
   // console.log(
   //   `keywords: ${JSON.stringify(
   //     { keywords },
@@ -13,7 +14,7 @@ const Keywords = ({ keywords }: Props) => {
   //   )}-------------------------------`
   // );
   return (
-    <div>
+    <div className={className}>
       <h4 className='font-bold text-lg mb-2'>Keywords</h4>
       <ul className='keyword-btn flex flex-wrap justify-start'>
         {keywords?.map((word, i) => (

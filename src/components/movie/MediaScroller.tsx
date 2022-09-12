@@ -48,14 +48,20 @@ const MediaScroller = ({
   const getMedia: any = (media: MediaSection) => {
     if (media) {
       const { videos, images } = media;
-      const video = filterSeven(videos.results).filter(
-        (video: any) => video.site === 'YouTube'
+      const video = (filterSeven(videos.results) as Video[]).filter(
+        (video) => video.site === 'YouTube'
       );
       const backdrops = filterSeven(images.backdrops);
       const posters = filterSeven(images.posters);
 
       const allMedia: { [key: string]: any } = {
-        most: [video[0], backdrops[0], posters[0]],
+        most: [
+          videos.results.find(
+            (video) => video.name === 'Official Trailer' && video.official
+          ),
+          backdrops[0],
+          posters[0],
+        ],
         video,
         backdrops,
         posters,
@@ -66,13 +72,6 @@ const MediaScroller = ({
   };
   const mediaData = getMedia(media);
 
-  // console.log(
-  //   `sliderleft, and sliderwith: ${JSON.stringify(
-  //     { sliderLeft, sliderWith },
-  //     null,
-  //     4
-  //   )}-------------------------------`
-  // );
   return (
     <div className='recs_scroller mb-5 relative'>
       <div

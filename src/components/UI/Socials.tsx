@@ -25,7 +25,7 @@ const Socials = ({ links, homepage }: Props) => {
           rel='noreferrer'
           href={`https://www.facebook.com/${links?.facebook_id}`}
         >
-          <FontAwesomeIcon icon={faFacebook} />
+          <FontAwesomeIcon icon={faFacebook} className='h-7' />
         </a>
       </li>
       <li className='social'>
@@ -34,7 +34,7 @@ const Socials = ({ links, homepage }: Props) => {
           rel='noreferrer'
           href={`https://twitter.com/${links?.twitter_id}`}
         >
-          <FontAwesomeIcon icon={faTwitter} />
+          <FontAwesomeIcon icon={faTwitter} className='h-7' />
         </a>
       </li>
       <li className='social'>
@@ -43,7 +43,7 @@ const Socials = ({ links, homepage }: Props) => {
           rel='noreferrer'
           href={`https://instagram.com/${links?.instagram_id}`}
         >
-          <FontAwesomeIcon icon={faInstagram} />
+          <FontAwesomeIcon icon={faInstagram} className='h-7' />
         </a>
       </li>
       <li className='social'>
@@ -52,12 +52,12 @@ const Socials = ({ links, homepage }: Props) => {
           rel='noreferrer'
           href={`https://www.imdb.com/title/${links?.imdb_id}`}
         >
-          <FontAwesomeIcon icon={faImdb} />
+          <FontAwesomeIcon icon={faImdb} className='h-7' />
         </a>
       </li>
       <li className='social'>
         <a target='_blank' rel='noreferrer' href={homepage}>
-          <FontAwesomeIcon icon={faHouse} />
+          <FontAwesomeIcon icon={faHouse} className='h-7' />
         </a>
       </li>
     </ul>

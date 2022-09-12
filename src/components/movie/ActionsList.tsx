@@ -55,7 +55,7 @@ function ActionsList({ voteAgerage, productions, trailers }: Props) {
                     alt='production'
                     objectFit='cover'
                     height={300}
-                    width={900}
+                    width={1000}
                   />
                 </a>
               </li>
