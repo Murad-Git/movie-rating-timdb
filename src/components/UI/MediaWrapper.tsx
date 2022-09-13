@@ -55,11 +55,11 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
   //       )}`;
 
   return (
-    <div className={`inline-block mr-1 lg:mr-4 mb-2 group text-black`}>
+    <div className={`inline-block mr-1 lg:mr-2 mb-2 group text-black`}>
       <div
         className={`image_content ${
           cast
-            ? 'w-[10rem] lg:w-[15rem]'
+            ? 'w-[10rem] lg:w-[13rem]'
             : mainMedia
             ? 'w-[10rem] md:w-[15rem]'
             : 'w-[30rem]'
@@ -168,7 +168,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                     className='hover:text-gray-400 cursor-pointer'
                     rel='noopener noreferrer'
                   >
-                    {mainMedia.original_name || mainMedia.title}
+                    {mainMedia.title || mainMedia.name}
                   </a>
                 </div>
                 <p className='text-gray-700 dark:text-gray-400 break-words text-md md:text-lg mb-1 md:mb-3 font-medium'>
