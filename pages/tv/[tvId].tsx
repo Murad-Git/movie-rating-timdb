@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { GetServerSideProps, NextPage } from 'next';
+import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
 import MediaScroller from '../../src/components/movie/MediaScroller';
 import VideoContent from '../../src/components/movie/VideoContent';
 import MediaController from '../../src/components/movie/MediaController';
-import { API_URL, TV_URL } from '../../src/utils/requests';
+import requests, { API_URL, TV_URL } from '../../src/utils/requests';
 import { TV } from '../../types/tvTypings';
 import FactsPanel from '../../src/components/movie/FactsPanel';
 import ContentWrapper from '../../src/components/UI/ContentWrapper';
 import HeroSection from '../../src/components/UI/HeroSection';
 import SeasonSection from '../../src/components/tv/SeasonSection';
 import Nav from '../../src/components/UI/Nav';
+import { MainType } from '../../types/mainTypings';
 
 interface Props {
   tv: TV;
 }
 
 const TvPage: NextPage<Props> = ({ tv }) => {
+  const seasonInfo = {
+    numOfSeasons: tv.number_of_seasons,
+    airDate: tv.first_air_date,
+  };
   const media = {
     videos: tv?.videos,
     images: tv?.images,
@@ -61,7 +66,7 @@ const TvPage: NextPage<Props> = ({ tv }) => {
               <section>
                 <h2 className='pageHeader'>Current Season</h2>
                 <div className='season_card flex rounded shadow-lg border-mainText-color mb-6'>
-                  <SeasonSection tv={tv.seasons[0]} title={tv.original_name} />
+                  <SeasonSection tv={tv.seasons} title={tv.name} />
                 </div>
               </section>
               {/* Media */}
@@ -103,19 +108,53 @@ const TvPage: NextPage<Props> = ({ tv }) => {
 
 export default TvPage;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const getData = context.params?.tvId;
+export const getStaticPaths = async () => {
+  const [trendDayUrl, trendWeekUrl, discoverMovieUrl, discoverTvUrl] =
+    requests('main');
+  const data = await Promise.allSettled(
+    [trendDayUrl, trendWeekUrl, discoverTvUrl].map((url) => fetch(url))
+  );
+  const [trendDRes, trendWRes, discTvRes] = data;
+  const trendDay = await trendDRes.value.json();
+  const trendWeek = await trendWRes.value.json();
+  const discTv = await discTvRes.value.json();
+
+  const posts = [
+    trendDay.results.filter((trend: MainType) => trend.media_type === 'tv'),
+    trendWeek.results.filter((trend: MainType) => trend.media_type === 'tv'),
+    discTv.results,
+  ];
+
+  const paths = [...new Set(posts.flat().map((item) => item.id))].map(
+    (post: MainType) => ({
+      params: {
+        tvId: post.toString(),
+      },
+    })
+  );
+  return {
+    paths,
+    fallback: 'blocking',
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  // const getData = context.params?.tvId;
   const tvId = (context.params?.tvId as string).split('-')[0];
 
-  // console.log(`context params:${context.params.split("-")[0]}=======`);
-  const query = '92783';
-  // console.log(`context of movie${context.params.movie}`);
+  // const query = '92783';
   const request = await fetch(
     `${TV_URL}${tvId}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images`
   );
+  if (!request) {
+    return {
+      notFound: true,
+    };
+  }
+
   const response = await request.json();
-  // console.log(`res: ${response}`);
   return {
     props: { tv: response },
+    revalidate: 86400,
   };
 };

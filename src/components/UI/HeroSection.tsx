@@ -23,6 +23,7 @@ const HeroSection = ({ media }: Props) => {
           layout='responsive'
           height={250}
           width={700}
+          priority
         />
       </div>
       <section className='original-header px-5 xl:px-16 py-5 md:grid md:grid-cols-2 md:gap-5 xl:gap-4 border-b-2 border-gray-50 mb-6 justify-center'>

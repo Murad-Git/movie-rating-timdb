@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import requests from '../src/utils/requests';
 import React, { useEffect } from 'react';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import { MainTypes, ServerProps } from '../types/mainTypings';
 import Nav from '../src/components/UI/Nav';
 import MainController from '../src/components/main/mainController';
@@ -9,6 +9,7 @@ import MediaScroller from '../src/components/movie/MediaScroller';
 import { mainPageTitles } from '../src/utils/helpers';
 import { useSelector } from 'react-redux';
 import { RootState } from '../src/store/store';
+import { MainType } from '../types/mainTypings';
 interface Props {
   trends: MainTypes;
   discover: MainTypes;
@@ -89,7 +90,7 @@ const Home: NextPage<Props> = ({ trends, discover }) => {
 
 export default Home;
 
-export const getServerSideProps: ServerProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   try {
     const [trendDayUrl, trendWeekUrl, discoverMovieUrl, discoverTvUrl] =
       requests('main');
@@ -116,6 +117,7 @@ export const getServerSideProps: ServerProps = async (context) => {
           tv: discTv,
         },
       },
+      revalidate: 86400,
     };
   } catch (error) {
     throw new Error(error);

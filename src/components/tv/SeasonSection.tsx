@@ -10,10 +10,14 @@ interface Props {
     overview: undefined | string;
     poster_path: string;
     season_number: number;
-  };
+  }[];
   title: string;
 }
 const SeasonSection = ({ tv, title }: Props) => {
+  const lastSeason = Object.entries(tv)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .at(-1)![1];
+
   return (
     <>
       <a className='poster block w-[15rem] text-black'>
@@ -22,7 +26,9 @@ const SeasonSection = ({ tv, title }: Props) => {
           objectFit='cover'
           className='overflow-hidden'
           src={
-            tv.poster_path ? `${IMG_URL}/${tv.poster_path}` : '/no-media.png'
+            lastSeason.poster_path
+              ? `${IMG_URL}/${lastSeason.poster_path}`
+              : '/no-media.png'
           }
           height={600}
           width={400}
@@ -31,15 +37,19 @@ const SeasonSection = ({ tv, title }: Props) => {
       </a>
       <div className='content w-full p-[20px] flex-col flex box-border flex-wrap items-start justify-center'>
         <div className='mb-10'>
-          <h2 className='boldText'>{tv.name}</h2>
+          <h2 className='boldText'>{lastSeason.name}</h2>
           <h4 className='bolText'>
-            {tv.air_date.split('-')[0]} | {tv.episode_count} Episodes
+            {lastSeason.air_date ? lastSeason.air_date.split('-')[0] : ''} |{' '}
+            {lastSeason.episode_count} Episodes
           </h4>
         </div>
         <div className='season_overview text-lg'>
           <p>
             Season 1 of {title} premiered on{' '}
-            {tv.air_date.split('-').reverse().join('/')}.
+            {lastSeason.air_date
+              ? lastSeason.air_date.split('-').reverse().join('/')
+              : ''}
+            .
           </p>
         </div>
       </div>

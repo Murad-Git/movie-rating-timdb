@@ -23,8 +23,6 @@ const requests: Props = (main, movie) => {
       `${BASE_URL}discover/tv?${API_URL}&language=en-US&sort_by=popularity.desc`,
     ];
   }
-  // if (discover)
-  //   `${BASE_URL}discover/${discover}?${API_URL}&language=en-US&sort_by=popularity.desc`;
 
   if (movie)
     `${BASE_URL}movie/${movie.id}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images,collection`;

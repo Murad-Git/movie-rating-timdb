@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
-import { GetServerSideProps, NextPage } from 'next';
+import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
 import MediaScroller from '../../src/components/movie/MediaScroller';
 import VideoContent from '../../src/components/movie/VideoContent';
 import MediaController from '../../src/components/movie/MediaController';
@@ -11,6 +11,8 @@ import { Movie } from '../../types/movieTypings';
 import ContentWrapper from '../../src/components/UI/ContentWrapper';
 import HeroSection from '../../src/components/UI/HeroSection';
 import Nav from '../../src/components/UI/Nav';
+import requests from '../../src/utils/requests';
+import { MainType } from '../../types/mainTypings';
 
 interface Props {
   movie: Movie;
@@ -135,21 +137,53 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
 };
 
 export default MoviePage;
+
+export const getStaticPaths = async () => {
+  const [trendDayUrl, trendWeekUrl, discoverMovieUrl] = requests('main');
+  const data = await Promise.allSettled(
+    [trendDayUrl, trendWeekUrl, discoverMovieUrl].map((url) => fetch(url))
+  );
+  const [trendDRes, trendWRes, discMRes] = data;
+  const trendDay = await trendDRes.value.json();
+  const trendWeek = await trendWRes.value.json();
+  const discMovie = await discMRes.value.json();
+
+  const posts = [
+    trendDay.results.filter((trend: MainType) => trend.media_type === 'movie'),
+    trendWeek.results.filter((trend: MainType) => trend.media_type === 'movie'),
+    discMovie.results,
+  ];
+
+  const paths = [...new Set(posts.flat().map((item) => item.id))].map(
+    (post: MainType) => ({
+      params: {
+        movieId: post.toString(),
+      },
+    })
+  );
+  return {
+    paths,
+    fallback: 'blocking',
+  };
+};
+
 // consider to change fetching to getStaticProps
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const getData = context.params?.movieId;
+export const getStaticProps: GetStaticProps = async (context) => {
+  // const getData = context.params?.movieId;
   const movieId = (context.params?.movieId as string).split('-')[0];
 
-  // console.log(`context params:${context.params.split("-")[0]}=======`);
   // const query = '616037';
-  // console.log(`context of movie${context.params.movie}`);
   const request = await fetch(
     `${MOVIE_URL}${movieId}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images,collection`
   );
-
+  if (!request) {
+    return {
+      notFound: true,
+    };
+  }
   const response = await request.json();
-  // console.log(`res: ${response}`);
   return {
     props: { movie: response },
+    revalidate: 86400,
   };
 };
