@@ -12,7 +12,7 @@ interface Props {
 
 const HeroSection = ({ media }: Props) => {
   return (
-    <div className='header text-xl'>
+    <div className='header text-lg lg:text-xl'>
       <div className='hero-img object-cover hidden lg:block w-full'>
         <Image
           className=''
@@ -44,14 +44,14 @@ const HeroSection = ({ media }: Props) => {
         </div>
         <div className='header_poster_wrapper'>
           <div className='title mb-6'>
-            <h1 className='text-4xl font-semibold'>
+            <h1 className='text-2xl lg:text-4xl font-semibold'>
               <a href={`${media?.homepage}`}>
                 {'name' in media && media.name}
                 {'title' in media && media.title}
               </a>
             </h1>
             <div className='subheader'>
-              <ul className='flex child:mx-1'>
+              <ul className='md:child:mx-1 text-base lg:text-xl lg:flex'>
                 <li>
                   {'release_date' in media
                     ? media.release_date.substring(0, 4)
@@ -78,14 +78,16 @@ const HeroSection = ({ media }: Props) => {
           </div>
           <div className='header_info'>
             {media.tagline && (
-              <h3 className='font-light my-2 text-xl'>
+              <h3 className='font-light my-2 md:text-xl'>
                 <em>{media.tagline}</em>
               </h3>
             )}
             {media.overview ? (
               <>
-                <h2 className='mt-4 mb-2 text-3xl font-bold'>Overview</h2>
-                <div className='text-lg text-justify'>
+                <h2 className='mt-4 mb-2 text-2xl md:text-3xl font-bold'>
+                  Overview
+                </h2>
+                <div className='text-base md:text-lg text-justify'>
                   <p>{media.overview}</p>
                 </div>
               </>

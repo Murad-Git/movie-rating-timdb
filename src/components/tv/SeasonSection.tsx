@@ -30,20 +30,20 @@ const SeasonSection = ({ tv, title }: Props) => {
               ? `${IMG_URL}/${lastSeason.poster_path}`
               : '/no-media.png'
           }
-          height={600}
+          height={800}
           width={400}
           alt='season'
         />
       </a>
-      <div className='content w-full p-[20px] flex-col flex box-border flex-wrap items-start justify-center'>
+      <div className='content w-full p-[20px] flex-col flex box-border flex-wrap items-start justify-start'>
         <div className='mb-10'>
-          <h2 className='boldText'>{lastSeason.name}</h2>
-          <h4 className='bolText'>
+          <h2 className='text-lg lg:text-3xl mb-2'>{lastSeason.name}</h2>
+          <h4 className='text-base lg:text-lg'>
             {lastSeason.air_date ? lastSeason.air_date.split('-')[0] : ''} |{' '}
             {lastSeason.episode_count} Episodes
           </h4>
         </div>
-        <div className='season_overview text-lg'>
+        <div className='season_overview text-base md:text-xl'>
           <p>
             Season 1 of {title} premiered on{' '}
             {lastSeason.air_date

@@ -44,7 +44,12 @@ const Revenue = ({ revenue }: Props) => {
             </li>
           ) : (
             <li>
-              <p>Not found</p>
+              <p>
+                <strong>
+                  <bdi>Budget</bdi>
+                </strong>
+                Not Found
+              </p>
             </li>
           )}
           {revenue.revenue && revenue.revenue > 0 ? (
@@ -58,7 +63,12 @@ const Revenue = ({ revenue }: Props) => {
             </li>
           ) : (
             <li>
-              <p>Not found</p>
+              <p>
+                <strong>
+                  <bdi>Revenue</bdi>
+                </strong>
+                Not Found
+              </p>
             </li>
           )}
         </ul>

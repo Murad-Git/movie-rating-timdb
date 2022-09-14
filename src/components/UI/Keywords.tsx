@@ -19,7 +19,7 @@ const Keywords = ({ keywords, className }: Props) => {
       <ul className='keyword-btn flex flex-wrap justify-start'>
         {keywords?.map((word, i) => (
           <li key={i}>
-            <a className='bg-mainText-color hover:bg-gray-100 text-black py-0.5 px-2 font-normal border-none hover:border-transparent rounded'>
+            <a className='bg-mainText-color hover:bg-gray-100 text-black py-0.5 px-1 font-normal border-none hover:border-transparent rounded text-base'>
               {word.name}
             </a>
           </li>

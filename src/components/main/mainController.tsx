@@ -38,7 +38,7 @@ const mainController = ({ menu }: Props) => {
   //     });
   // };
   return (
-    <ul className='flex w-full media-list '>
+    <ul className='flex w-full media-list items-center '>
       {menu.map((item, index) => (
         <li
           key={index}
@@ -46,8 +46,8 @@ const mainController = ({ menu }: Props) => {
             mediaTypes[item.key][item.key] === item.class ? 'selected' : ''
           }
         >
-          <a
-            className='cursor-pointer text-xl font-semibold'
+          <p
+            className='cursor-pointer text-xl font-semibold '
             onClick={() =>
               // handleDispatch(item)
               dispatch(
@@ -58,7 +58,7 @@ const mainController = ({ menu }: Props) => {
             }
           >
             {item.title}
-          </a>
+          </p>
         </li>
       ))}
     </ul>

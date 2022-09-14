@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
-import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import MediaScroller from '../../src/components/movie/MediaScroller';
 import VideoContent from '../../src/components/movie/VideoContent';
 import MediaController from '../../src/components/movie/MediaController';
@@ -13,12 +13,16 @@ import HeroSection from '../../src/components/UI/HeroSection';
 import Nav from '../../src/components/UI/Nav';
 import requests from '../../src/utils/requests';
 import { MainType } from '../../types/mainTypings';
+import { useRouter } from 'next/router';
+import { urlTitle } from '../../src/utils/helpers';
 
 interface Props {
   movie: Movie;
 }
 
 const MoviePage: NextPage<Props> = ({ movie }) => {
+  const { query } = useRouter();
+  const { movieId } = query;
   const media = {
     videos: movie?.videos,
     images: movie?.images,
@@ -35,17 +39,43 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
     keywords: movie?.keywords?.keywords || movie?.keywords?.results,
   };
 
-  const [shown, setShown] = useState(false);
-  // console.log(`from index.js${mediaContent.media}`);
-
-  const showMoreHandler = () => {
-    setShown((prevState) => !prevState);
-  };
-
   return (
     <>
       <Head>
         <title>{movie.title}</title>
+        <link rel='icon' href='/icon.png' />
+        {/* Primary Meta Tags */}
+        <meta name='title' content={movie.title} />
+        <meta
+          name='description'
+          content={movie.overview ? movie.overview : 'Movies page'}
+        />
+
+        {/* Open Graph / Facebook */}
+        <meta property='og:type' content='website' />
+        <meta
+          property='og:url'
+          content={`https://movie-rating-timdb.vercel.app/movie/${movieId}`}
+        />
+        <meta property='og:title' content={movie.title} />
+        <meta
+          property='og:description'
+          content={movie.overview ? movie.overview : 'Movies page'}
+        />
+        <meta property='og:image' content='./public/page_screenshot.png' />
+
+        {/* Twitter  */}
+        <meta property='twitter:card' content='summary_large_image' />
+        <meta
+          property='twitter:url'
+          content={`https://movie-rating-timdb.vercel.app/movie/${movieId}`}
+        />
+        <meta property='twitter:title' content={movie.title} />
+        <meta
+          property='twitter:description'
+          content={movie.overview ? movie.overview : 'Movies page'}
+        />
+        <meta property='twitter:image' content='./public/page_screenshot.png' />
       </Head>
       <Nav />
       <div className=' flex-col flex-auto min-h-full h-auto relative top-0 left-0 '>
@@ -56,7 +86,7 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
           <ContentWrapper>
             <div className='main-content col-span-3'>
               {/* cast */}
-              <section className='cast  mb-6'>
+              <section className='cast mb-6'>
                 <h2 className='pageHeader'>Cast</h2>
                 <div className='mb-5'>
                   <MediaScroller

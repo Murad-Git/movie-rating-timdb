@@ -28,13 +28,13 @@ function ActionsList({ voteAgerage, productions, trailers }: Props) {
   );
 
   return (
-    <ul className='flex items-center child:mr-3 whitespace-nowrap font-semibold text-lg'>
+    <ul className='flex items-center flex-wrap child:mr-3 whitespace-nowrap font-semibold text-base md:text-lg'>
       {voteAgerage && (
         <li className='flex items-center'>
           <div className='score inline-block mr-2'>
             <FontAwesomeIcon
               color='#f5c518'
-              className='h-7'
+              className='h-5 md:h-7'
               size='lg'
               icon={faStar}
             />
@@ -80,7 +80,7 @@ function ActionsList({ voteAgerage, productions, trailers }: Props) {
               )
             }
           >
-            <FontAwesomeIcon icon={faPlay} className='mr-1 h-5' />
+            <FontAwesomeIcon icon={faPlay} className='mr-1 h-3 md:h-5' />
             Play Trailer
           </a>
         </li>

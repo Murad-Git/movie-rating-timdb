@@ -79,6 +79,9 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                       ? `${IMG_URL}/${cast.profile_path}`
                       : '/no-person.png'
                   }
+                  sizes='(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw'
                   height={height}
                   width={width}
                   alt='actor'
@@ -116,6 +119,9 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                   ? `${YT_URL}${media.key}/hqdefault.jpg`
                   : '/no-media.png'
               }
+              sizes='(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw'
               height={height}
               width={width}
               alt={media.name}
@@ -137,6 +143,9 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                   ? `${IMG_URL}${media.file_path}`
                   : '/no-media.png'
               }
+              sizes='(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw'
               height={height}
               width={width}
               alt='media'
@@ -158,12 +167,15 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
                     ? `${IMG_URL}${mainMedia.poster_path}`
                     : '/no-media.png'
                 }
+                sizes='(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw'
                 height={height}
                 width={width}
                 alt='actor'
               />
-              <div className='p-3'>
-                <div className='whitespace-pre-wrap break-words text-lg lg:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1 md:mb-3 min-h-[6rem]'>
+              <div className='p-2 md:p-3'>
+                <div className='whitespace-pre-wrap break-words text-lg lg:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1 md:mb-3 min-h-[5rem]'>
                   <a
                     className='hover:text-gray-400 cursor-pointer'
                     rel='noopener noreferrer'

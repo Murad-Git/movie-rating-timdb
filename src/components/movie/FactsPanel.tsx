@@ -19,14 +19,18 @@ interface Props {
 
 const FactsPanel = ({ facts }: Props) => {
   return (
-    <div className='flex justify-between lg:flex-col'>
-      <h1 className='boldText'>Facts</h1>
-      {facts.revenue && <Revenue revenue={facts.revenue} />}
-      <div className='keywords w-1/3  lg:w-full'>
-        <div className='social_links lg:mb-6'>
+    <div className='lg:flex-col'>
+      <div className='flex items-center justify-between'>
+        <h1 className='boldText'>Facts</h1>
+        <div className='social_links'>
           <Socials links={facts.links} homepage={facts.homepage} />
         </div>
-        <Keywords keywords={facts.keywords} className='mb-6' />
+      </div>
+      <div className='grid grid-cols-2 mt-2'>
+        {facts.revenue && <Revenue revenue={facts.revenue} />}
+        <div className='keywords w-full lg:w-full'>
+          <Keywords keywords={facts.keywords} className='mb-6' />
+        </div>
       </div>
     </div>
   );

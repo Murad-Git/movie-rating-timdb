@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import MediaScroller from '../../src/components/movie/MediaScroller';
 import VideoContent from '../../src/components/movie/VideoContent';
 import MediaController from '../../src/components/movie/MediaController';
@@ -12,16 +12,16 @@ import HeroSection from '../../src/components/UI/HeroSection';
 import SeasonSection from '../../src/components/tv/SeasonSection';
 import Nav from '../../src/components/UI/Nav';
 import { MainType } from '../../types/mainTypings';
+import { useRouter } from 'next/router';
 
 interface Props {
   tv: TV;
 }
 
 const TvPage: NextPage<Props> = ({ tv }) => {
-  const seasonInfo = {
-    numOfSeasons: tv.number_of_seasons,
-    airDate: tv.first_air_date,
-  };
+  const { query } = useRouter();
+  const { tvId } = query;
+
   const media = {
     videos: tv?.videos,
     images: tv?.images,
@@ -40,6 +40,39 @@ const TvPage: NextPage<Props> = ({ tv }) => {
     <>
       <Head>
         <title>{tv.name}</title>
+        <link rel='icon' href='/icon.png' />
+        {/* Primary Meta Tags */}
+        <meta name='title' content={tv.name} />
+        <meta
+          name='description'
+          content={tv.overview ? tv.overview : 'Tv show page'}
+        />
+
+        {/* Open Graph / Facebook */}
+        <meta property='og:type' content='website' />
+        <meta
+          property='og:url'
+          content={`https://movie-rating-timdb.vercel.app/movie/${tvId}`}
+        />
+        <meta property='og:title' content={tv.name} />
+        <meta
+          property='og:description'
+          content={tv.overview ? tv.overview : 'Tv show page'}
+        />
+        <meta property='og:image' content='./public/page_screenshot.png' />
+
+        {/* Twitter  */}
+        <meta property='twitter:card' content='summary_large_image' />
+        <meta
+          property='twitter:url'
+          content={`https://movie-rating-timdb.vercel.app/movie/${tvId}`}
+        />
+        <meta property='twitter:title' content={tv.name} />
+        <meta
+          property='twitter:description'
+          content={tv.overview ? tv.overview : 'Tv show page'}
+        />
+        <meta property='twitter:image' content='./public/page_screenshot.png' />
       </Head>
       <Nav />
       <div className=' flex-col flex-auto min-h-full h-auto relative top-0 left-0 '>
