@@ -47,6 +47,7 @@ const Home: NextPage<Props> = ({ trends, discover }) => {
         <link rel='icon' href='/icon.png' />
         {/* Primary Meta Tags */}
         <title>Movie rating page</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='title' content='Movie rating page' />
         <meta
           name='description'
@@ -81,7 +82,7 @@ const Home: NextPage<Props> = ({ trends, discover }) => {
       </Head>
 
       <Nav />
-      <main className='main flex flex-col justify-center mt-[50px] md:mt-[64px] bg-slate-500 xl:w-10/12 mx-auto'>
+      <main className='main flex flex-col justify-center mt-[50px] md:mt-[64px] text-mainText-color xl:w-10/12 mx-auto'>
         <section className='hidden md:block discover-media border-none'>
           <div
             className='discover-img w-full h-full bg-no-repeat bg-cover bg-right-top'

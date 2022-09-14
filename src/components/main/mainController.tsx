@@ -47,7 +47,7 @@ const mainController = ({ menu }: Props) => {
           }
         >
           <p
-            className='cursor-pointer text-xl font-semibold '
+            className='cursor-pointer text-xl text-mainText-color font-semibold '
             onClick={() =>
               // handleDispatch(item)
               dispatch(

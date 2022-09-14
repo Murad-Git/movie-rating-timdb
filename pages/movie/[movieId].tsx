@@ -46,6 +46,7 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
         <link rel='icon' href='/icon.png' />
         {/* Primary Meta Tags */}
         <meta name='title' content={movie.title} />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta
           name='description'
           content={movie.overview ? movie.overview : 'Movies page'}

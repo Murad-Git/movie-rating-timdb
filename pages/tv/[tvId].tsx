@@ -43,6 +43,7 @@ const TvPage: NextPage<Props> = ({ tv }) => {
         <link rel='icon' href='/icon.png' />
         {/* Primary Meta Tags */}
         <meta name='title' content={tv.name} />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta
           name='description'
           content={tv.overview ? tv.overview : 'Tv show page'}
