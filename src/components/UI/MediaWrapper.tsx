@@ -157,7 +157,7 @@ const MediaWrapper = ({ media, cast, mainMedia, height, width }: MediaType) => {
         {/* media list */}
         {mainMedia && (
           <Link href={mainPageLink as string} target='_blank'>
-            <div className='bg-mainText-color rounded-lg  shadow-lg cursor-pointer'>
+            <div className='bg-mainText-color rounded-lg  shadow-lg cursor-pointer scrollbar-thin'>
               <Image
                 layout='responsive'
                 objectFit='cover'

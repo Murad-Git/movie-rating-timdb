@@ -73,10 +73,10 @@ const MediaScroller = ({
   const mediaData = getMedia(media);
 
   return (
-    <div className='recs_scroller mb-5 relative'>
+    <div className='recs_scroller mb-5 relative '>
       <div
         ref={scrollerRef}
-        className='scroller whitespace-nowrap overflow-y-hidden scroll-smooth grid grid-flow-col gap-2'
+        className='scroller whitespace-nowrap overflow-y-hidden scroll-smooth grid grid-flow-col gap-2 scrollbar-thin'
       >
         {media &&
           mediaData[currentMedia as keyof typeof mediaData].map(

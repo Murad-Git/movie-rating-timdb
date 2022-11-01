@@ -2,14 +2,13 @@ import Head from 'next/head';
 import requests from '../src/utils/requests';
 import React, { useEffect } from 'react';
 import { GetStaticProps, NextPage } from 'next';
-import { MainTypes, ServerProps } from '../types/mainTypings';
+import { MainTypes } from '../types/mainTypings';
 import Nav from '../src/components/UI/Nav';
 import MainController from '../src/components/main/mainController';
 import MediaScroller from '../src/components/movie/MediaScroller';
 import { mainPageTitles } from '../src/utils/helpers';
 import { useSelector } from 'react-redux';
 import { RootState } from '../src/store/store';
-import { MainType } from '../types/mainTypings';
 interface Props {
   trends: MainTypes;
   discover: MainTypes;
@@ -17,7 +16,6 @@ interface Props {
 
 const Home: NextPage<Props> = ({ trends, discover }) => {
   const [hasMounted, setHasMounted] = React.useState(false);
-
   const { trendType } = useSelector((state: RootState) => state.media);
   const { discoverType } = useSelector((state: RootState) => state.media);
 
@@ -36,6 +34,7 @@ const Home: NextPage<Props> = ({ trends, discover }) => {
 
     margin: '0 auto',
   };
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -122,7 +121,7 @@ const Home: NextPage<Props> = ({ trends, discover }) => {
 
 export default Home;
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   try {
     const [trendDayUrl, trendWeekUrl, discoverMovieUrl, discoverTvUrl] =
       requests('main');
@@ -132,11 +131,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
         fetch(url)
       )
     );
+    if (!data) {
+      return {
+        notFound: true,
+      };
+    }
     const [trendDRes, trendWRes, discMRes, discTRes] = data;
-    const trendDay = await trendDRes.value.json();
-    const trendWeek = await trendWRes.value.json();
-    const discMovie = await discMRes.value.json();
-    const discTv = await discTRes.value.json();
+    const trendDay = await trendDRes?.value.json();
+    const trendWeek = await trendWRes?.value.json();
+    const discMovie = await discMRes?.value.json();
+    const discTv = await discTRes?.value.json();
 
     return {
       props: {
@@ -155,40 +159,3 @@ export const getStaticProps: GetStaticProps = async (context) => {
     throw new Error(error);
   }
 };
-
-// const data = await Promise.allSettled([
-//   fetch(discoverUrl),
-//   fetch(trendUrl),
-// ]);
-// const response = (
-//   data.find((res) => res.status === 'fulfilled') as
-//     | PromiseFulfilledResult<string>
-//     | undefined
-// )?.value;
-// if (!response) {
-//   const error = (
-//     data.find((res) => res.status === 'rejected') as
-//       | PromiseRejectedResult
-//       | undefined
-//   )?.reason;
-//   throw new Error(error);
-// }
-
-// const discover = await discRes.value.json();
-// const trends = await trendRes.value.json();
-
-// const requestTrend = await fetch(
-//   `${BASE_URL}trending/all/day?language=en-US&${API_URL}`
-// );
-// const requestDiscover = await fetch(
-//   `${BASE_URL}discover/movie?${API_URL}&language=en-US&sort_by=popularity.desc`
-// );
-// const requestTrend = await fetch(
-//   `${BASE_URL}trending/all/${trend}?language=en-US&${API_URL}`
-// );
-// const requestDiscover = await fetch(
-//   `${BASE_URL}discover/${discover}?${API_URL}&language=en-US&sort_by=popularity.desc`
-// );
-
-// const responseTrend = await requestTrend.json();
-// const responseDiscover = await requestDiscover.json();

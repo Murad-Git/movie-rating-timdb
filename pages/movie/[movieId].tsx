@@ -14,7 +14,6 @@ import Nav from '../../src/components/UI/Nav';
 import requests from '../../src/utils/requests';
 import { MainType } from '../../types/mainTypings';
 import { useRouter } from 'next/router';
-import { urlTitle } from '../../src/utils/helpers';
 
 interface Props {
   movie: Movie;
@@ -170,51 +169,63 @@ const MoviePage: NextPage<Props> = ({ movie }) => {
 export default MoviePage;
 
 export const getStaticPaths = async () => {
-  const [trendDayUrl, trendWeekUrl, discoverMovieUrl] = requests('main');
-  const data = await Promise.allSettled(
-    [trendDayUrl, trendWeekUrl, discoverMovieUrl].map((url) => fetch(url))
-  );
-  const [trendDRes, trendWRes, discMRes] = data;
-  const trendDay = await trendDRes.value.json();
-  const trendWeek = await trendWRes.value.json();
-  const discMovie = await discMRes.value.json();
+  try {
+    const [trendDayUrl, trendWeekUrl, discoverMovieUrl] = requests('main');
+    const data = await Promise.allSettled(
+      [trendDayUrl, trendWeekUrl, discoverMovieUrl].map((url) => fetch(url))
+    );
+    const [trendDRes, trendWRes, discMRes] = data;
+    const trendDay = await trendDRes.value.json();
+    const trendWeek = await trendWRes.value.json();
+    const discMovie = await discMRes.value.json();
 
-  const posts = [
-    trendDay.results.filter((trend: MainType) => trend.media_type === 'movie'),
-    trendWeek.results.filter((trend: MainType) => trend.media_type === 'movie'),
-    discMovie.results,
-  ];
+    const posts = [
+      trendDay.results.filter(
+        (trend: MainType) => trend.media_type === 'movie'
+      ),
+      trendWeek.results.filter(
+        (trend: MainType) => trend.media_type === 'movie'
+      ),
+      discMovie.results,
+    ];
 
-  const paths = [...new Set(posts.flat().map((item) => item.id))].map(
-    (post: MainType) => ({
-      params: {
-        movieId: post.toString(),
-      },
-    })
-  );
-  return {
-    paths,
-    fallback: 'blocking',
-  };
+    const paths = [...new Set(posts.flat().map((item) => item.id))].map(
+      (post: MainType) => ({
+        params: {
+          movieId: post.toString(),
+        },
+      })
+    );
+    return {
+      paths,
+      fallback: 'blocking',
+    };
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 // consider to change fetching to getStaticProps
 export const getStaticProps: GetStaticProps = async (context) => {
-  // const getData = context.params?.movieId;
-  const movieId = (context.params?.movieId as string).split('-')[0];
+  try {
+    // const getData = context.params?.movieId;
+    const movieId = (context?.params?.movieId as string).split('-')[0];
 
-  // const query = '616037';
-  const request = await fetch(
-    `${MOVIE_URL}${movieId}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images,collection`
-  );
-  if (!request) {
+    // const query = '616037';
+    const request = await fetch(
+      `${MOVIE_URL}${movieId}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images,collection`
+    );
+    if (!request) {
+      return {
+        notFound: true,
+      };
+    }
+    const response = await request.json();
     return {
-      notFound: true,
+      props: { movie: response },
+      revalidate: 86400,
     };
+  } catch (error) {
+    throw new Error(error);
   }
-  const response = await request.json();
-  return {
-    props: { movie: response },
-    revalidate: 86400,
-  };
 };

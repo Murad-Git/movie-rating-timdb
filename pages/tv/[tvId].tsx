@@ -143,52 +143,60 @@ const TvPage: NextPage<Props> = ({ tv }) => {
 export default TvPage;
 
 export const getStaticPaths = async () => {
-  const [trendDayUrl, trendWeekUrl, discoverMovieUrl, discoverTvUrl] =
-    requests('main');
-  const data = await Promise.allSettled(
-    [trendDayUrl, trendWeekUrl, discoverTvUrl].map((url) => fetch(url))
-  );
-  const [trendDRes, trendWRes, discTvRes] = data;
-  const trendDay = await trendDRes.value.json();
-  const trendWeek = await trendWRes.value.json();
-  const discTv = await discTvRes.value.json();
+  try {
+    const [trendDayUrl, trendWeekUrl, discoverMovieUrl, discoverTvUrl] =
+      requests('main');
+    const data = await Promise.allSettled(
+      [trendDayUrl, trendWeekUrl, discoverTvUrl].map((url) => fetch(url))
+    );
+    const [trendDRes, trendWRes, discTvRes] = data;
+    const trendDay = await trendDRes.value.json();
+    const trendWeek = await trendWRes.value.json();
+    const discTv = await discTvRes.value.json();
 
-  const posts = [
-    trendDay.results.filter((trend: MainType) => trend.media_type === 'tv'),
-    trendWeek.results.filter((trend: MainType) => trend.media_type === 'tv'),
-    discTv.results,
-  ];
+    const posts = [
+      trendDay.results.filter((trend: MainType) => trend.media_type === 'tv'),
+      trendWeek.results.filter((trend: MainType) => trend.media_type === 'tv'),
+      discTv.results,
+    ];
 
-  const paths = [...new Set(posts.flat().map((item) => item.id))].map(
-    (post: MainType) => ({
-      params: {
-        tvId: post.toString(),
-      },
-    })
-  );
-  return {
-    paths,
-    fallback: 'blocking',
-  };
+    const paths = [...new Set(posts.flat().map((item) => item.id))].map(
+      (post: MainType) => ({
+        params: {
+          tvId: post.toString(),
+        },
+      })
+    );
+    return {
+      paths,
+      fallback: 'blocking',
+    };
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  // const getData = context.params?.tvId;
-  const tvId = (context.params?.tvId as string).split('-')[0];
+  try {
+    // const getData = context.params?.tvId;
+    const tvId = (context?.params?.tvId as string).split('-')[0];
 
-  // const query = '92783';
-  const request = await fetch(
-    `${TV_URL}${tvId}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images`
-  );
-  if (!request) {
+    // const query = '92783';
+    const request = await fetch(
+      `${TV_URL}${tvId}?${API_URL}&append_to_response=videos,keywords,recommendations,external_ids,credits,images`
+    );
+    if (!request) {
+      return {
+        notFound: true,
+      };
+    }
+
+    const response = await request.json();
     return {
-      notFound: true,
+      props: { tv: response },
+      revalidate: 86400,
     };
+  } catch (error) {
+    throw new Error(error);
   }
-
-  const response = await request.json();
-  return {
-    props: { tv: response },
-    revalidate: 86400,
-  };
 };
